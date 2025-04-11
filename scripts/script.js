@@ -21,8 +21,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 // Add some animation to the model (toggled by click)
                 plate.setAttribute('animation', {
                     property: 'rotation',
-                    to: '-90 90 0',
-                    dur: 3000, // 3 seconds
+                    to: '0 90 0',
+                    dur: 6000, // 6 seconds
                     easing: 'linear',
                     loop: true
                 });
