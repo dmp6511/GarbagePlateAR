@@ -1,11 +1,12 @@
 // Scripts for AR.js
 
-// TO DO: Make the model clickable
+// TO DO: Make the model clickable (once it loads)
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector("#gbPlate");
-
-    plate.addEventListener('click', () => {
-        alert("You clicked the plate!");
+    plate.addEventListener('model-loaded', () => { // Wait for the model to load
+        plate.addEventListener('click', () => {
+            alert("You clicked the plate!");
+        });
     });
 });
 // TO DO: Add some animation to the model
