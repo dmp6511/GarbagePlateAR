@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 plate.removeAttribute('animation');
                 isSpinning = false;
 
-                // Optional: reset rotation to original
+                // reset rotation
                 plate.setAttribute('rotation', '-90 0 0');
             }
         });
