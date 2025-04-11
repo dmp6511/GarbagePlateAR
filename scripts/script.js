@@ -1,6 +1,6 @@
 // Scripts for AR.js
 
-// TO DO: Make the model clickable (once it loads)
+// Make the model clickable (once it loads)
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
@@ -21,8 +21,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 // Add some animation to the model (toggled by click)
                 plate.setAttribute('animation', {
                     property: 'rotation',
-                    to: '-90 0 360',
-                    dur: 3000,
+                    to: '-90 90 0',
+                    dur: 3000, // 3 seconds
                     easing: 'linear',
                     loop: true
                 });
@@ -39,5 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// TO DO: Add some information about the ingredients in the dish
 // TO DO: Add a button to get an external link to the restaurant's site
 // TO DO: Add music and/or sounds to the experience to make it more immersive
