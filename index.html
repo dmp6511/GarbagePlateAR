@@ -14,7 +14,8 @@
 <body style="margin: 0; overflow: hidden;">
 
   <!-- AR Scene -->
-  <a-scene embedded arjs vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true">
+  <a-scene embedded arjs vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true"
+    cursor="rayOrigin: mouse">
 
     <!-- Lighting -->
     <a-entity light="type: ambient; intensity: 1"></a-entity>
@@ -26,7 +27,7 @@
                 gltf-model="./assets/gbPlate.gltf"
                 scale="1 1 1"
                 position="0 0 0"
-                rotation="0 0 0">
+                rotation="-90 0 0">
       </a-entity>
     </a-marker>
 
@@ -34,6 +35,8 @@
     <a-entity camera></a-entity>
   </a-scene>
 
+<!--   script link -->
+  <script src="./scripts/script.js"></script>
 </body>
 
 </html>
