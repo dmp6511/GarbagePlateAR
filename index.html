@@ -22,13 +22,14 @@
 
     <!-- Custom Marker -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.5 0.5 0.5" position="0 0 0" rotation="-90 -15 0">
+      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.5 0.5 0.5" position="0 0 0"
+        rotation="-45 0 -15">
       </a-entity>
 
       <!-- text area  -->
-      <a-entity id="gbAbout" text="value: Garbage Plate; color: #FFF; width: 2; align: center;" position="10 0.5 0">
-
-      </a-entity>
+      <a-text id="gbAbout"
+        value="This is an area that will be used to provide details about the ingredients of the Garbage Plate"
+        color="#FFF" width="15" position="10 0 0"></a-text>
     </a-marker>
 
     <!-- Camera -->
