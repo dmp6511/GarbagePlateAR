@@ -2,14 +2,42 @@
 
 // TO DO: Make the model clickable (once it loads)
 window.addEventListener('DOMContentLoaded', () => {
-    const plate = document.querySelector("#gbPlate");
-    plate.addEventListener('model-loaded', () => { // Wait for the model to load
+    const plate = document.querySelector('#gbPlate');
+    const message = document.querySelector('#message');
+    let isSpinning = false;
+
+    plate.addEventListener('model-loaded', () => {
         plate.addEventListener('click', () => {
-            alert("You clicked the plate!");
+
+            // Add a popup with information about the model
+            message.style.display = 'block';
+
+            // hide after 3 seconds
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+
+            if (!isSpinning) {
+                // Add some animation to the model (toggled by click)
+                plate.setAttribute('animation', {
+                    property: 'rotation',
+                    to: '-90 360 0',
+                    dur: 3000,
+                    easing: 'linear',
+                    loop: true
+                });
+                isSpinning = true;
+            } else {
+                // Stop spinning
+                plate.removeAttribute('animation');
+                isSpinning = false;
+
+                // Optional: reset rotation to original
+                plate.setAttribute('rotation', '-90 0 0');
+            }
         });
     });
 });
-// TO DO: Add some animation to the model
-// TO DO: Add a popup with information about the model
+
 // TO DO: Add a button to get an external link to the restaurant's site
 // TO DO: Add music and/or sounds to the experience to make it more immersive
