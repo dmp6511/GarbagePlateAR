@@ -2,39 +2,38 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garbage Plates - AR</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garbage Plates - AR</title>
 
-    <!-- scripts -->
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <!-- A-Frame & AR.js -->
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
 
-    <h1>Garbage Plates </h1>
+  <!-- AR Scene -->
+  <a-scene embedded arjs vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true">
 
-    <!-- Scene -->
-    <a-scene embedded ar.js vr-mode-ui="enabled: false" raycaster cursor="rayOrigin: mouse"
-        renderer="antialias: true; alpha : true">
-        <!-- Light -->
+    <!-- Lighting -->
+    <a-entity light="type: ambient; intensity: 1"></a-entity>
+    <a-entity light="type: directional; intensity: 0.5" position="0 1 1"></a-entity>
 
+    <!-- Marker -->
+    <a-marker preset="hiro">
+      <a-entity id="gbPlate"
+                gltf-model="./assets/gbPlate.gltf"
+                scale="1 1 1"
+                position="0 0 0"
+                rotation="0 0 0">
+      </a-entity>
+    </a-marker>
 
-        <!-- marker (hiro marker for now) -->
-        <!-- TO DO: CREATE AND CHANGE TO CUSTOM MARKER -->
-        <a-marker preset="hiro">
+    <!-- Camera -->
+    <a-entity camera></a-entity>
+  </a-scene>
 
-            <!-- Garbage Plate 3D Model -->
-            <a-entity id="gbPlate" gltf-model="../assets/gbPlate.gltf" scale="1 1 1" position="0 0 0"
-                rotation="0 0 0"></a-entity>
-        </a-marker>
-
-        <!-- Camera -->
-        <a-entity camera></a-entity>
-    </a-scene>
-
-    <script src="./scripts/script.js"></script>
 </body>
 
 </html>
