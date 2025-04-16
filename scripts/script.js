@@ -33,9 +33,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 isSpinning = false;
 
                 // reset rotation
-                plate.setAttribute('rotation', '-90 0 0');
+                plate.setAttribute('rotation', '0 -90 0');
             }
-            
+
             // TO DO: Add some information about the ingredients in the dish
         });
     });
