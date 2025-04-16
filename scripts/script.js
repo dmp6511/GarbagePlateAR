@@ -35,10 +35,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 // reset rotation
                 plate.setAttribute('rotation', '-90 0 0');
             }
+            
+            // TO DO: Add some information about the ingredients in the dish
         });
     });
 });
 
-// TO DO: Add some information about the ingredients in the dish
 // TO DO: Add a button to get an external link to the restaurant's site
 // TO DO: Add music and/or sounds to the experience to make it more immersive
