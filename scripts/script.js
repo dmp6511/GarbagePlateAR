@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 plate.setAttribute('animation', {
                     property: 'rotation',
                     to: '0 90 0',
-                    dur: 6000,
+                    dur: 8000,
                     easing: 'linear',
                     loop: true
                 });
@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     closeBtn.addEventListener('click', () => {
         videoPopup.style.display = 'none';
-        videoFrame.src = ''; // ⛔️ stop video
-        isVideoOpen = false; // ✅ allow future clicks
+        videoFrame.src = '';
+        isVideoOpen = false;
     });
 });
