@@ -4,7 +4,7 @@
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
-    const videoPopup = document.querySelector('#videoPopup'); // new
+    const videoPopup = document.querySelector('#videoPopup'); // Video of Alex Tahou explaining the dish
     let isSpinning = false;
 
     plate.addEventListener('model-loaded', () => {
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 plate.setAttribute('rotation', '0 -90 0');
             }
 
-            // TO DO: Add some information about the ingredients in the dish
+            
             // TO DO: Add a button to get an external link to the restaurant's site
         });
     });
