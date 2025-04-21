@@ -1,32 +1,34 @@
-// Scripts for AR.js
-
-// Make the model clickable (once it loads)
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
     const videoPopup = document.querySelector('#videoPopup');
     const videoFrame = document.querySelector('#gbVideo');
     const closeBtn = document.querySelector('#closeVideoBtn');
-    let isSpinning = false;
 
-    // YouTube snippet: Alex Tahou - play from 35s to 50s
-    const snippetUrl = "https://www.youtube.com/embed/bIY95EJczgM?start=35&end=50&autoplay=1&controls=1";
+    let isSpinning = false;
+    let isVideoOpen = false; // Prevent spam
+
+    // YouTube snippet: 35s to 50s, show full frame
+    const snippetUrl = "https://www.youtube.com/embed/bIY95EJczgM?start=35&end=50&autoplay=1&controls=1&modestbranding=1&rel=0";
 
     plate.addEventListener('model-loaded', () => {
         plate.addEventListener('click', () => {
-            // Show text message
+            if (isVideoOpen) return;
+            isVideoOpen = true;
+
+            // Show message
             message.style.display = 'block';
 
-            // Load video + show popup
+            // Load and show video
             videoFrame.src = snippetUrl;
             videoPopup.style.display = 'block';
 
-            // Hide message after 3 seconds
+            // Hide text after 3s
             setTimeout(() => {
                 message.style.display = 'none';
             }, 3000);
 
-            // Toggle rotation
+            // Toggle model animation
             if (!isSpinning) {
                 plate.setAttribute('animation', {
                     property: 'rotation',
@@ -44,9 +46,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Close button stops video + hides popup
     closeBtn.addEventListener('click', () => {
         videoPopup.style.display = 'none';
-        videoFrame.src = ''; // clear the src to stop playback/audio
+        videoFrame.src = ''; // ⛔️ stop video
+        isVideoOpen = false; // ✅ allow future clicks
     });
 });
