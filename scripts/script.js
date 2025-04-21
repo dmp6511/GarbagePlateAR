@@ -39,9 +39,9 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             
-            // TO DO: Add a button to get an external link to the restaurant's site
         });
     });
 });
 
+// TO DO: Add a button to get an external link to the restaurant's site
 // TO DO: Add music and/or sounds to the experience to make it more immersive
