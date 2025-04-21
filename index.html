@@ -22,8 +22,7 @@
 
     <!-- Custom Marker -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.5 0.5 0.5" position="0 0 0"
-        rotation="0 -90 0"> 
+      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.5 0.5 0.5" position="0 0 0" rotation="0 -90 0">
       </a-entity>
 
       <!-- text area  -->
@@ -54,6 +53,24 @@
   z-index: 999;">
     This is a Garbage Plate! A local delicacy from Rochester, NY!
   </div>
+
+  <!-- Youtube video of Alex Tahou ("ta-who") detailing the garbage plate -->
+  <div id="videoPopup" style="
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+  z-index: 999;">
+    <iframe width="300" height="170"
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?start=36&end=90&autoplay=1&controls=1"
+      title="Garbage Plate Snippet" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+  </div>
+
 
 
 

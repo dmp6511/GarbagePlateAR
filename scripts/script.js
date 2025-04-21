@@ -4,42 +4,44 @@
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
+    const videoPopup = document.querySelector('#videoPopup'); // new
     let isSpinning = false;
 
     plate.addEventListener('model-loaded', () => {
         plate.addEventListener('click', () => {
 
-            // Add a popup with information about the model
+            // Show the popup message
             message.style.display = 'block';
 
-            // hide after 3 seconds
+            // Show the video popup
+            videoPopup.style.display = 'block';
+
+            // Hide both after a set time
             setTimeout(() => {
                 message.style.display = 'none';
-            }, 3000);
+                videoPopup.style.display = 'none';
+            }, 30000); // 30 seconds
 
+            // Toggle spinning
             if (!isSpinning) {
-                // Add some animation to the model (toggled by click)
                 plate.setAttribute('animation', {
                     property: 'rotation',
                     to: '0 90 0',
-                    dur: 6000, // 6 seconds
+                    dur: 6000,
                     easing: 'linear',
                     loop: true
                 });
                 isSpinning = true;
             } else {
-                // Stop spinning
                 plate.removeAttribute('animation');
                 isSpinning = false;
-
-                // reset rotation
                 plate.setAttribute('rotation', '0 -90 0');
             }
 
             // TO DO: Add some information about the ingredients in the dish
+            // TO DO: Add a button to get an external link to the restaurant's site
         });
     });
 });
 
-// TO DO: Add a button to get an external link to the restaurant's site
 // TO DO: Add music and/or sounds to the experience to make it more immersive
