@@ -4,25 +4,29 @@
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
-    const videoPopup = document.querySelector('#videoPopup'); // Video of Alex Tahou explaining the dish
+    const videoPopup = document.querySelector('#videoPopup');
+    const videoFrame = document.querySelector('#gbVideo');
+    const closeBtn = document.querySelector('#closeVideoBtn');
     let isSpinning = false;
+
+    // YouTube snippet: Alex Tahou - play from 35s to 50s
+    const snippetUrl = "https://www.youtube.com/embed/bIY95EJczgM?start=35&end=50&autoplay=1&controls=1";
 
     plate.addEventListener('model-loaded', () => {
         plate.addEventListener('click', () => {
-
-            // Show the popup message
+            // Show text message
             message.style.display = 'block';
 
-            // Show the video popup
+            // Load video + show popup
+            videoFrame.src = snippetUrl;
             videoPopup.style.display = 'block';
 
-            // Hide both after a set time
+            // Hide message after 3 seconds
             setTimeout(() => {
                 message.style.display = 'none';
-                videoPopup.style.display = 'none';
-            }, 30000); // 30 seconds
+            }, 3000);
 
-            // Toggle spinning
+            // Toggle rotation
             if (!isSpinning) {
                 plate.setAttribute('animation', {
                     property: 'rotation',
@@ -37,11 +41,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 isSpinning = false;
                 plate.setAttribute('rotation', '0 -90 0');
             }
-
-            
         });
     });
-});
 
-// TO DO: Add a button to get an external link to the restaurant's site
-// TO DO: Add music and/or sounds to the experience to make it more immersive
+    // Close button stops video + hides popup
+    closeBtn.addEventListener('click', () => {
+        videoPopup.style.display = 'none';
+        videoFrame.src = ''; // clear the src to stop playback/audio
+    });
+});
