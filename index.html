@@ -9,6 +9,23 @@
   <!-- A-Frame & AR.js -->
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <style>
+    /* Ensure the video player is responsive */
+    #videoPopup {
+      width: 100%;
+      max-width: 600px;
+      /* Maximum width for larger views */
+      box-sizing: border-box;
+      padding: 10px;
+    }
+
+    #gbVideo {
+      width: 100%;
+      /* Full width for responsiveness */
+      height: auto;
+      /* Maintain aspect ratio */
+    }
+  </style>
 </head>
 
 <body style="margin: 0; overflow: hidden;">
@@ -83,14 +100,12 @@
     <div style="
     position: relative;
     width: 100%;
-    max-width: 420px; /* Safe max width for mobile */
-    margin: 0 auto;
     padding-bottom: 56.25%; /* 16:9 ratio */
-    height: 50%;
+    height: 0;
     overflow: hidden;
     border-radius: 8px;">
 
-      <video id="gbVideo" width="640" height="360" controls>
+      <video id="gbVideo" controls>
         <source src="assets/GBExplain.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
