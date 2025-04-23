@@ -1,15 +1,16 @@
+
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
     const videoPopup = document.querySelector('#videoPopup');
-    const videoFrame = document.querySelector('#gbVideo');
+    const videoElement = document.querySelector('#gbVideo'); // video
     const closeBtn = document.querySelector('#closeVideoBtn');
 
     let isSpinning = false;
     let isVideoOpen = false; // Prevent spam
 
-    // YouTube snippet: 35s to 50s, show full frame
-    const snippetUrl = "https://www.youtube.com/embed/bIY95EJczgM?start=35&end=50&autoplay=1&controls=1&modestbranding=1&rel=0";
+    // Self-hosted video configuration
+    const videoSourceUrl = "assets/GBExplain.mp4";
 
     plate.addEventListener('model-loaded', () => {
         plate.addEventListener('click', () => {
@@ -19,9 +20,11 @@ window.addEventListener('DOMContentLoaded', () => {
             // Show message
             message.style.display = 'block';
 
-            // Load and show video
-            videoFrame.src = snippetUrl;
+            // Load and play self-hosted video
+            videoElement.src = videoSourceUrl;
+            videoElement.style.display = 'block'; // Ensure it's visible
             videoPopup.style.display = 'block';
+            videoElement.play(); // Start playing the video
 
             // Hide text after 3s
             setTimeout(() => {
@@ -48,7 +51,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     closeBtn.addEventListener('click', () => {
         videoPopup.style.display = 'none';
-        videoFrame.src = '';
+        videoElement.pause(); // Ensure video stops playing when closed
+        videoElement.src = ''; // Clean up the video source
         isVideoOpen = false;
     });
 });
