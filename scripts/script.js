@@ -54,47 +54,50 @@ window.addEventListener('DOMContentLoaded', () => {
         audioElement.play().catch(err => {
             console.error('Error playing audio:', err);
 
-            /* ── plate loaded ────────────────────── */
-            plate.addEventListener('model-loaded', () => {
-                addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
+        });
+        audioElement.volume = 0.5; // Set volume to 50%
+        audioElement.loop = true; // Loop the audio
+    });
 
-                plate.addEventListener('click', () => {
-                    if (activated) return;
-                    activated = true;
+    /* ── plate loaded ────────────────────── */
+    plate.addEventListener('model-loaded', () => {
+        addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
+    });
 
-                    /* brief toast */
-                    msgBox.style.display = 'block';
-                    setTimeout(() => (msgBox.style.display = 'none'), 3000);
 
-                    /* spin toggle */
-                    if (!spinning) {
-                        plate.setAttribute('animation', {
-                            property: 'rotation',
-                            to: '0 90 0',
-                            dur: 8000,
-                            easing: 'linear',
-                            loop: true
-                        });
-                        spinning = true;
-                    }
+    plate.addEventListener('click', () => {
+        if (activated) return;
+        activated = true;
 
-                    /* reveal ingredients + labels */
-                    ['mac', 'burg', 'fries'].forEach(key => {
-                        models[key].setAttribute('visible', 'true');
-                        labels[key].setAttribute('visible', 'true');
-                    });
-                });
+        /* brief toast */
+        msgBox.style.display = 'block';
+        setTimeout(() => (msgBox.style.display = 'none'), 3000);
+
+        /* spin toggle */
+        if (!spinning) {
+            plate.setAttribute('animation', {
+                property: 'rotation',
+                to: '0 90 0',
+                dur: 8000,
+                easing: 'linear',
+                loop: true
             });
+            spinning = true;
+        }
+
+        /* reveal ingredients + labels */
+        ['mac', 'burg', 'fries'].forEach(key => {
+            models[key].setAttribute('visible', 'true');
+            labels[key].setAttribute('visible', 'true');
         });
     });
-    /* ── label click handlers ─────────────── */
-    models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
-    models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
-    models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
 
-    /* make hideSidebar globally available for the sidebar close button */
-    window.hideSidebar = hideSidebar;
 });
+/* ── label click handlers ─────────────── */
+models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
+models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
+models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
+
 
 
 // gesture-handler.js
