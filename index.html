@@ -76,8 +76,8 @@
     <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
       <!-- Garbage Plate (scaled down and lowered) -->
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 2 0" rotation="-45 0 0"
-        gesture-detector gesture-handler>
+      <a-entity id="gbPlate" class="clickable" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 2 0"
+        rotation="-45 0 0" gesture-detector gesture-handler>
       </a-entity>
 
 
@@ -206,7 +206,7 @@
     padding: 20px;
     z-index: 1000;
     font-family: sans-serif;
-    transform: translateX(-15px);
+    transform: translateX(-20px);
   ">
 
     <h1 style="font-size: 2em; margin-bottom: 10px;">Welcome to the Garbage Plate AR Experience</h1>
