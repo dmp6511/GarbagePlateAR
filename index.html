@@ -67,9 +67,6 @@
   <!-- AR Scene -->
   <a-scene embedded arjs vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true" cursor="rayOrigin: mouse">
 
-    <!-- Camera -->
-    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
-
     <!-- look at script -->
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
@@ -117,6 +114,9 @@
       <a-entity id="gbFries" class="clickable" gltf-model="./assets/french_fries/fries.gltf" scale="0.05 0.05 0.05"
         position="1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
     </a-marker>
+
+    <!-- Camera -->
+    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
 
   </a-scene>
 
@@ -176,8 +176,8 @@
 
     <h1 style="font-size: 2em; margin-bottom: 10px;">Welcome to the Garbage Plate AR Experience</h1>
     <p style="max-width: 600px; font-size: 1.1em; margin-bottom: 30px;">
-      Explore Rochester’s most iconic dish in augmented reality. Tap the plate to learn more about each ingredient—and
-      don’t forget to watch how it’s made!
+      Explore Rochester’s most iconic dish in augmented reality. Tap the plate to learn more about the ingredients in
+      it. Don't forget to watch how it’s made!
     </p>
     <button id="startBtn" style="
   padding: 12px 20px;
@@ -192,9 +192,6 @@
     </button>
 
   </div>
-
-
-
   <script src="./scripts/script.js"></script>
 </body>
 

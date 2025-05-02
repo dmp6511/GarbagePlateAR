@@ -14,15 +14,6 @@ function addText(value, position) {
     parent.appendChild(t);
 }
 
-function showSidebar(msg) {
-    document.getElementById('sidebarText').textContent = msg;
-    document.getElementById('sidebar').style.right = '0px';
-}
-
-function hideSidebar() {
-    document.getElementById('sidebar').style.right = '-260px';
-}
-
 
 window.addEventListener('DOMContentLoaded', () => {
     const plate = document.querySelector('#gbPlate');
@@ -65,6 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    // plate clicked
     plate.addEventListener('click', () => {
         if (activated) return;
         activated = true;
@@ -94,9 +86,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 /* ── label click handlers ─────────────── */
-models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
-models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
-models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
+// models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
+// models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
+// models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
 
 
 
