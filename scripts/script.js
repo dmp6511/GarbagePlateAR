@@ -13,15 +13,16 @@ function addText(value, position) {
     t.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json');
     parent.appendChild(t);
 }
-
-function showSidebar(msg) {
-    document.getElementById('sidebarText').textContent = msg;
-    document.getElementById('sidebar').style.right = '0px';
+function showInfo(txt) {
+    const panel = document.querySelector('#infoPanel');
+    document.querySelector('#infoText').setAttribute('value', txt);
+    panel.setAttribute('visible', 'true');
 }
 
-function hideSidebar() {
-    document.getElementById('sidebar').style.right = '-260px';
+function hideInfo() {
+    document.querySelector('#infoPanel').setAttribute('visible', 'false');
 }
+
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -80,13 +81,19 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* ── label click handlers ─────────────── */
-    models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
-    models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
-    models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
+    /* ── label click events ───────────────── */
+    document.querySelector('#infoPanel').addEventListener('click', hideInfo);
 
-    /* make hideSidebar globally available for the sidebar close button */
-    window.hideSidebar = hideSidebar;
+    models.mac.addEventListener('click', () => {
+        showInfo('Macaroni Salad\nA creamy, tangy side dish that adds a cool contrast to the plate.\n\nIngredients: Macaroni, mayo, mustard, celery, onion, spices.');
+    });
+    models.burg.addEventListener('click', () => {
+        showInfo('Hamburger\nA juicy beef patty, grilled to perfection and served hot.\n\nIngredients: Ground beef, spices, bun.');
+    });
+    models.fries.addEventListener('click', () => {
+        showInfo('French Fries\nCrispy, golden fries that are the perfect side to any plate.\n\nIngredients: Potatoes, oil, salt.');
+    });
+
 });
 
 
