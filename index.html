@@ -81,25 +81,25 @@
       </a-entity>
 
       <!-- Text container (placed above the plate) -->
-      <a-entity id="text-container" position="0 5 -1"></a-entity>
+      <a-entity id="text-container" position="0 5 -1.8"></a-entity>
 
       <!-- Ingredient models (positioned behind and above the plate, facing the camera) -->
       <a-text id="labelMac" value="Mac Salad" position="-1.5 5.6 -1.5" look-at="[camera]" color="white" width="2"
         visible="false"></a-text>
       <a-entity id="gbMac" gltf-model="./assets/single_cooked_macaroni/mac.gltf" scale="18.7 18.7 18.7"
-        position="-1.5 5.15 -1.5" look-at="[camera]" visible="false"></a-entity>
+        position="-1.5 4.75 -1.5" look-at="[camera]" visible="false"></a-entity>
 
 
-      <a-text id="labelBurg" value="Burger" position="0 5.6 -1.5" look-at="[camera]" color="white" width="2"
+      <a-text id="labelBurg" value="Burger" position="0 4.8 -1.5" look-at="[camera]" color="white" width="2"
         visible="false"></a-text>
-      <a-entity id="gbBurg" gltf-model="./assets/burger/burger.gltf" scale="1.4 1.4 1.4" position="0 5 -1.5"
+      <a-entity id="gbBurg" gltf-model="./assets/burger/burger.gltf" scale="1.4 1.4 1.4" position="0 4.85 -1.5"
         look-at="[camera]" visible="false"></a-entity>
 
 
       <a-text id="labelFries" value="Fries" position="1.5 5.6 -1.5" look-at="[camera]" color="white" width="2"
         visible="false"></a-text>
       <a-entity id="gbFries" gltf-model="./assets/french_fries/fries.gltf" scale="0.05 0.05 0.05"
-        position="1.5 5.15 -1.5" look-at="[camera]" visible="false"></a-entity>
+        position="1.5 4.75 -1.5" look-at="[camera]" visible="false"></a-entity>
     </a-marker>
 
     <!-- Camera -->
@@ -217,6 +217,44 @@
     z-index: 999;">
     🍳 Watch It Being Made!
   </button>
+
+  <!-- Intro Overlay -->
+  <div id="introOverlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.95);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    z-index: 1000;
+    font-family: sans-serif;
+  ">
+
+    <h1 style="font-size: 2em; margin-bottom: 10px;">Welcome to the Garbage Plate AR Experience</h1>
+    <p style="max-width: 600px; font-size: 1.1em; margin-bottom: 30px;">
+      Explore Rochester’s most iconic dish in augmented reality. Tap the plate to learn more about each ingredient—and
+      don’t forget to watch how it’s made!
+    </p>
+
+    <button onclick="document.getElementById('introOverlay').style.display='none'" style="
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #ff4500;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    ">Start</button>
+
+  </div>
+
 
 
   <script src="./scripts/script.js"></script>
