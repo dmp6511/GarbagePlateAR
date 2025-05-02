@@ -75,10 +75,15 @@
 
     <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
+
+      <a-entity id="text-container" position="0 2.5 0" look-at="[camera]"> </a-entity>
+
+
       <!-- Garbage Plate (scaled down and lowered) -->
       <a-entity id="gbPlate" class="clickable" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 2 0"
         rotation="-45 0 0" gesture-detector gesture-handler>
       </a-entity>
+
 
 
       <!-- Ingredient models (positioned behind and above the plate, facing the camera) -->

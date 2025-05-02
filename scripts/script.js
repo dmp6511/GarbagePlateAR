@@ -1,48 +1,4 @@
-/* ───────────── 1. Gesture‑handler (unchanged) ───────────── */
-AFRAME.registerComponent('gesture-handler', {
-    schema: { enabled: { default: true }, resetDelay: { default: 2000 } },
 
-    init() {
-        this.initialRotation = this.el.getAttribute('rotation');
-        this.initialScale = this.el.getAttribute('scale');
-        this.resetTimeout = null;
-
-        this.handleRotation = this.handleRotation.bind(this);
-        this.handleScale = this.handleScale.bind(this);
-        this.scheduleReset = this.scheduleReset.bind(this);
-
-        this.el.addEventListener('onefingermove', this.handleRotation);
-        this.el.addEventListener('twofingermove', this.handleScale);
-        this.el.addEventListener('touchend', this.scheduleReset);
-    },
-
-    remove() {
-        this.el.removeEventListener('onefingermove', this.handleRotation);
-        this.el.removeEventListener('twofingermove', this.handleScale);
-        this.el.removeEventListener('touchend', this.scheduleReset);
-    },
-
-    handleRotation(e) {
-        const rot = this.el.getAttribute('rotation');
-        this.el.setAttribute('rotation', { x: rot.x, y: rot.y + e.detail.positionChange.x * 2, z: rot.z });
-    },
-
-    handleScale(e) {
-        const s = this.el.getAttribute('scale');
-        const d = e.detail.spreadChange / 200;
-        this.el.setAttribute('scale', { x: s.x + d, y: s.y + d, z: s.z + d });
-    },
-
-    scheduleReset() {
-        clearTimeout(this.resetTimeout);
-        this.resetTimeout = setTimeout(() => {
-            this.el.setAttribute('rotation', this.initialRotation);
-            this.el.setAttribute('scale', this.initialScale);
-        }, this.data.resetDelay);
-    }
-});
-
-/* ───────────── 2. Helpers ───────────── */
 function addText(value, position) {
     const parent = document.querySelector('#text-container');
     const t = document.createElement('a-text');
@@ -60,14 +16,14 @@ function addText(value, position) {
 
 function showSidebar(msg) {
     document.getElementById('sidebarText').textContent = msg;
-    document.getElementById('sidebar').style.right = '0';
+    document.getElementById('sidebar').style.right = '0px';
 }
 
 function hideSidebar() {
     document.getElementById('sidebar').style.right = '-260px';
 }
 
-/* ───────────── 3. Main logic ───────────── */
+
 window.addEventListener('DOMContentLoaded', () => {
     /* Intro text above marker */
     addText('Garbage Plate', { x: 0, y: 3.5, z: 0.8 });
@@ -131,4 +87,49 @@ window.addEventListener('DOMContentLoaded', () => {
 
     /* make hideSidebar globally available for the sidebar close button */
     window.hideSidebar = hideSidebar;
+});
+
+
+// gesture-handler.js
+AFRAME.registerComponent('gesture-handler', {
+    schema: { enabled: { default: true }, resetDelay: { default: 2000 } },
+
+    init() {
+        this.initialRotation = this.el.getAttribute('rotation');
+        this.initialScale = this.el.getAttribute('scale');
+        this.resetTimeout = null;
+
+        this.handleRotation = this.handleRotation.bind(this);
+        this.handleScale = this.handleScale.bind(this);
+        this.scheduleReset = this.scheduleReset.bind(this);
+
+        this.el.addEventListener('onefingermove', this.handleRotation);
+        this.el.addEventListener('twofingermove', this.handleScale);
+        this.el.addEventListener('touchend', this.scheduleReset);
+    },
+
+    remove() {
+        this.el.removeEventListener('onefingermove', this.handleRotation);
+        this.el.removeEventListener('twofingermove', this.handleScale);
+        this.el.removeEventListener('touchend', this.scheduleReset);
+    },
+
+    handleRotation(e) {
+        const rot = this.el.getAttribute('rotation');
+        this.el.setAttribute('rotation', { x: rot.x, y: rot.y + e.detail.positionChange.x * 2, z: rot.z });
+    },
+
+    handleScale(e) {
+        const s = this.el.getAttribute('scale');
+        const d = e.detail.spreadChange / 200;
+        this.el.setAttribute('scale', { x: s.x + d, y: s.y + d, z: s.z + d });
+    },
+
+    scheduleReset() {
+        clearTimeout(this.resetTimeout);
+        this.resetTimeout = setTimeout(() => {
+            this.el.setAttribute('rotation', this.initialRotation);
+            this.el.setAttribute('scale', this.initialScale);
+        }, this.data.resetDelay);
+    }
 });
