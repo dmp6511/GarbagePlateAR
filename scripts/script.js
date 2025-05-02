@@ -63,9 +63,9 @@ function addText(content, position = { x: 0, y: 0.5, z: -1 }) {
 
 window.addEventListener('DOMContentLoaded', () => {
     // Initial AR text labels
-    addText("Garbage Plate", { x: 0, y: 1, z: 0 });
-    addText("A Rochester, NY classic", { x: 0, y: 0.7, z: 0 });
-    addText("Meat, mac salad, fries & more", { x: 0, y: 0.4, z: 0 });
+    addText("Garbage Plate", { x: 0, y: 3.5, z: 0.8 });
+    addText("A Rochester, NY classic", { x: 0, y: 2.7, z: 0.8 });
+    addText("Meat, mac salad, fries & more", { x: 0, y: 2.4, z: 0.8 });
 
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
@@ -94,12 +94,6 @@ window.addEventListener('DOMContentLoaded', () => {
             // ✅ Recommended: open external video page
             window.open('video.html', '_blank');
 
-            // ❌ (Commented out) Old popup video logic:
-            // videoElement.src = "assets/GBExplain.mp4";
-            // videoElement.style.display = 'block';
-            // videoPopup.style.display = 'block';
-            // videoElement.play();
-
             // Toggle rotation
             if (!isSpinning) {
                 plate.setAttribute('animation', {
@@ -115,16 +109,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 isSpinning = false;
                 plate.setAttribute('rotation', '0 -90 0');
             }
+
+            document.querySelector('#gbMac').setAttribute('visible', 'true');
+            document.querySelector('#gbBurg').setAttribute('visible', 'true');
+            document.querySelector('#gbFries').setAttribute('visible', 'true');
         });
     });
-
-    // Only relevant if you're still using the in-scene video popup
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            videoPopup.style.display = 'none';
-            videoElement.pause();
-            videoElement.src = '';
-            isVideoOpen = false;
-        });
-    }
 });
