@@ -1,6 +1,12 @@
+/* scripts/script.js – Garbage Plate AR logic (May 2025) */
 
+/* ────────────────────────────
+   Utility helpers
+──────────────────────────── */
 function addText(value, position) {
     const parent = document.querySelector('#text-container');
+    if (!parent) return;
+
     const t = document.createElement('a-text');
     t.setAttribute('value', value);
     t.setAttribute('position', `${position.x} ${position.y} ${position.z}`);
@@ -13,51 +19,75 @@ function addText(value, position) {
     t.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json');
     parent.appendChild(t);
 }
-function showInfo(txt) {
+
+function showInfo(msg) {
     const panel = document.querySelector('#infoPanel');
-    document.querySelector('#infoText').setAttribute('value', txt);
+    const text = document.querySelector('#infoText');
+    if (!panel || !text) return;
+
+    text.setAttribute('value', msg);
     panel.setAttribute('visible', 'true');
 }
 
 function hideInfo() {
-    document.querySelector('#infoPanel').setAttribute('visible', 'false');
+    const panel = document.querySelector('#infoPanel');
+    if (panel) panel.setAttribute('visible', 'false');
 }
 
-
-
+/* ────────────────────────────
+   Main runtime
+──────────────────────────── */
 window.addEventListener('DOMContentLoaded', () => {
+    /* DOM refs */
+    const plate = document.getElementById('gbPlate');
+    const msgBox = document.getElementById('message');
+    const startBtn = document.getElementById('startBtn');
+    const introOverlay = document.getElementById('introOverlay');
+    const introAudio = document.getElementById('introAudio');
 
-    const plate = document.querySelector('#gbPlate');
-    const msgBox = document.querySelector('#message');
-
-    /* label + model entities */
     const labels = {
-        mac: document.querySelector('#labelMac'),
-        burg: document.querySelector('#labelBurg'),
-        fries: document.querySelector('#labelFries')
+        mac: document.getElementById('labelMac'),
+        burg: document.getElementById('labelBurg'),
+        fries: document.getElementById('labelFries')
     };
+
     const models = {
-        mac: document.querySelector('#gbMac'),
-        burg: document.querySelector('#gbBurg'),
-        fries: document.querySelector('#gbFries')
+        mac: document.getElementById('gbMac'),
+        burg: document.getElementById('gbBurg'),
+        fries: document.getElementById('gbFries')
     };
 
-    let spinning = false;
-    let activated = false;          // ensure plate tap logic runs once
+    /* ---------- Intro overlay ---------- */
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            /* hide overlay */
+            if (introOverlay) introOverlay.style.display = 'none';
 
-    /* ── plate loaded ────────────────────── */
+            /* play music (user‑gesture) */
+            if (introAudio) {
+                introAudio.currentTime = 0;
+                introAudio.play().catch(err => console.warn('Intro audio blocked:', err));
+            }
+        });
+    }
+
+    /* ---------- Plate interaction ---------- */
+    let spinning = false;
+    let activated = false;
+
     plate.addEventListener('model-loaded', () => {
+        /* display helper text once model is ready */
         addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
 
         plate.addEventListener('click', () => {
             if (activated) return;
             activated = true;
 
-            /* brief toast */
+            /* toast message */
             msgBox.style.display = 'block';
             setTimeout(() => (msgBox.style.display = 'none'), 3000);
 
-            /* spin toggle */
+            /* start spin animation */
             if (!spinning) {
                 plate.setAttribute('animation', {
                     property: 'rotation',
@@ -69,32 +99,45 @@ window.addEventListener('DOMContentLoaded', () => {
                 spinning = true;
             }
 
-            /* reveal ingredients + labels */
-            ['mac', 'burg', 'fries'].forEach(key => {
-                models[key].setAttribute('visible', 'true');
-                labels[key].setAttribute('visible', 'true');
-            });
+            /* show all ingredient meshes + labels */
+            Object.values(models).forEach(m => m.setAttribute('visible', 'true'));
+            Object.values(labels).forEach(l => l.setAttribute('visible', 'true'));
         });
     });
 
-
+    /* ---------- Ingredient click events ---------- */
     models.mac.addEventListener('click', () => {
-        alert('Mac clicked!');
-        showInfo('Macaroni Salad\nA creamy, tangy side dish that adds a cool contrast to the plate.\n\nIngredients: Macaroni, mayo, mustard, celery, onion, spices.');
-    });
-    models.burg.addEventListener('click', () => {
-        alert('Burger clicked!');
-        showInfo('Hamburger\nA juicy beef patty, grilled to perfection and served hot.\n\nIngredients: Ground beef, spices, bun.');
-    });
-    models.fries.addEventListener('click', () => {
-        alert('Fries clicked!');
-        showInfo('French Fries\nCrispy, golden fries that are the perfect side to any plate.\n\nIngredients: Potatoes, oil, salt.');
+        showInfo(
+            'Macaroni Salad\nA creamy, tangy side that cools the plate.\n' +
+            'Ingredients: Macaroni, mayo, mustard, celery, onion, spices.'
+        );
     });
 
+    models.burg.addEventListener('click', () => {
+        showInfo(
+            'Hamburger Patty\nJuicy beef grilled to perfection.\n' +
+            'Ingredients: Ground beef, seasoning.'
+        );
+    });
+
+    models.fries.addEventListener('click', () => {
+        showInfo(
+            'French Fries\nCrispy golden potatoes with a dash of salt.\n' +
+            'Ingredients: Potatoes, oil, salt.'
+        );
+    });
+
+    /* hide info panel when tapping elsewhere */
+    document.querySelector('a-scene').addEventListener('touchstart', hideInfo);
 });
 
 
-// gesture-handler.js
+
+
+
+/* ────────────────────────────
+   Gesture‑handler component
+──────────────────────────── */
 AFRAME.registerComponent('gesture-handler', {
     schema: { enabled: { default: true }, resetDelay: { default: 2000 } },
 
@@ -120,13 +163,21 @@ AFRAME.registerComponent('gesture-handler', {
 
     handleRotation(e) {
         const rot = this.el.getAttribute('rotation');
-        this.el.setAttribute('rotation', { x: rot.x, y: rot.y + e.detail.positionChange.x * 2, z: rot.z });
+        this.el.setAttribute('rotation', {
+            x: rot.x,
+            y: rot.y + e.detail.positionChange.x * 2,
+            z: rot.z
+        });
     },
 
     handleScale(e) {
         const s = this.el.getAttribute('scale');
         const d = e.detail.spreadChange / 200;
-        this.el.setAttribute('scale', { x: s.x + d, y: s.y + d, z: s.z + d });
+        this.el.setAttribute('scale', {
+            x: s.x + d,
+            y: s.y + d,
+            z: s.z + d
+        });
     },
 
     scheduleReset() {
