@@ -44,6 +44,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const infoPanel = document.getElementById('infoPanel');
     const infoText = document.getElementById('infoText');
     const audioElement = document.querySelector('audio');
+    const plate = document.querySelector('#GBplate');
+    const msg = document.querySelector('#message');
 
     // Ingredient elements
     const gbMac = document.getElementById('gbMac');
@@ -53,6 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const labelBurg = document.getElementById('labelBurg');
     const labelFries = document.getElementById('labelFries');
 
+
     // Start button click handler
     startBtn.addEventListener('click', () => {
         // Hide intro overlay
@@ -60,40 +63,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Play background music
         playBackgroundMusic();
+    });
 
-        // gbPlate 
-        plate.addEventListener('model-loaded', () => {
-            addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
+    // plate click handler
+    plate.addEventListener('model-loaded', () => {
+        addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
 
-            plate.addEventListener('click', () => {
-                if (activated) return;
-                activated = true;
+        plate.addEventListener('click', () => {
+            if (activated) return;
+            activated = true;
 
-                /* brief toast */
-                msgBox.style.display = 'block';
-                setTimeout(() => (msgBox.style.display = 'none'), 3000);
+            /* brief toast */
+            msgBox.style.display = 'block';
+            setTimeout(() => (msgBox.style.display = 'none'), 3000);
 
-                /* spin toggle */
-                if (!spinning) {
-                    plate.setAttribute('animation', {
-                        property: 'rotation',
-                        to: '0 90 0',
-                        dur: 8000,
-                        easing: 'linear',
-                        loop: true
-                    });
-                    spinning = true;
-                }
-
-                /* reveal ingredients + labels */
-                ['mac', 'burg', 'fries'].forEach(key => {
-                    models[key].setAttribute('visible', 'true');
-                    labels[key].setAttribute('visible', 'true');
+            /* spin toggle */
+            if (!spinning) {
+                plate.setAttribute('animation', {
+                    property: 'rotation',
+                    to: '0 90 0',
+                    dur: 8000,
+                    easing: 'linear',
+                    loop: true
                 });
+                spinning = true;
+            }
+
+            /* reveal ingredients + labels */
+            ['mac', 'burg', 'fries'].forEach(key => {
+                models[key].setAttribute('visible', 'true');
+                labels[key].setAttribute('visible', 'true');
             });
         });
-
     });
+
+
 
     // Function to play background music
     function playBackgroundMusic() {
