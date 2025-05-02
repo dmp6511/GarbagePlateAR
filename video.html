@@ -11,22 +11,56 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
+            color: white;
+            font-family: sans-serif;
         }
 
         video {
             max-width: 90%;
-            max-height: 90%;
+            max-height: 80%;
             border-radius: 12px;
+        }
+
+        .redirect-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: crimson;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
-    <video controls autoplay>
+    <video id="video" controls autoplay>
         <source src="assets/GBExplain.mp4" type="video/mp4" />
         Your browser does not support the video tag.
     </video>
+
+    <button id="restaurantBtn" class="redirect-btn" onclick="window.location.href='https://www.garbageplate.com'">
+        Visit the Restaurant
+    </button>
+
+    <button id="backBtn" class="redirect-btn" onclick="window.location.href='index.html'">
+        Go Back to AR Scene
+    </button>
+
+    <script>
+        const video = document.getElementById('video');
+        const restaurantBtn = document.getElementById('restaurantBtn');
+        const backBtn = document.getElementById('backBtn');
+
+        video.addEventListener('ended', () => {
+            restaurantBtn.style.display = 'inline-block';
+            backBtn.style.display = 'inline-block';
+        });
+    </script>
 </body>
 
 </html>
