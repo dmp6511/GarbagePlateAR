@@ -67,6 +67,9 @@
   <!-- AR Scene -->
   <a-scene embedded arjs vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true" cursor="rayOrigin: mouse">
 
+    <!-- Camera -->
+    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
+
     <!-- look at script -->
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
@@ -115,8 +118,6 @@
         position="1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
     </a-marker>
 
-    <!-- Camera -->
-    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
   </a-scene>
 
   <!-- Message Box -->

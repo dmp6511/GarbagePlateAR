@@ -57,17 +57,32 @@ window.addEventListener('DOMContentLoaded', () => {
         fries: document.getElementById('gbFries')
     };
 
+    if (introAudio) introAudio.load(); // Preload audio
+
+    /* ---------- Intro audio ---------- */
+    function playIntroAudio() {
+        if (!introAudio) return;
+        introAudio.currentTime = 0; // Reset to start
+        introAudio.volume = 0.5; // Set volume to 50%
+        const p = introAudio.play();
+        if (p && p.catch) {
+            p.catch(() => {
+                // Handle play promise rejection (e.g., user interaction required)
+                console.warn('Audio playback was prevented. User interaction may be required.');
+            });
+        }
+    }
+
     /* ---------- Intro overlay ---------- */
     if (startBtn) {
-        startBtn.addEventListener('click', () => {
-            /* hide overlay */
-            if (introOverlay) introOverlay.style.display = 'none';
-
-            /* play music (user‑gesture) */
-            if (introAudio) {
-                introAudio.currentTime = 0;
-                introAudio.play().catch(err => console.warn('Intro audio blocked:', err));
-            }
+        /* support both click (desktop) and touchend (mobile) */
+        ['click', 'touchend'].forEach(ev => {
+            startBtn.addEventListener(ev, e => {
+                e.preventDefault();
+                /* hide overlay */
+                if (introOverlay) introOverlay.style.display = 'none';
+                playIntroAudio();
+            }, { once: true });   // run once only
         });
     }
 
