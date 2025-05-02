@@ -75,36 +75,33 @@
 
     <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-
-      <!-- ============ MAC LABEL ============ -->
-      <a-entity id="labelMac" class="clickable" position="-1.5 5.6 -1.5" look-at="[camera]">
-
-        <!-- invisible plane hit‑box -->
-        <a-plane width="1.2" height="0.35" material="opacity:0; transparent:true"></a-plane>
-
-        <!-- visible text -->
-        <a-text value="Mac Salad" align="center" color="#fff" width="2" position="0 0 0.01"></a-text>
-        <!-- nudge forward -->
-
+      <!-- Garbage Plate (scaled down and lowered) -->
+      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 2 0" rotation="-45 0 0"
+        gesture-detector gesture-handler>
       </a-entity>
 
-      <!-- ============ BURGER LABEL ============ -->
-      <a-entity id="labelBurg" class="clickable" position="0 5.6 -1.5" look-at="[camera]">
-        <a-plane width="1" height="0.35" material="opacity:0; transparent:true"></a-plane>
-        <a-text value="Burger" align="center" color="#fff" width="2" position="0 0 0.01"></a-text>
-      </a-entity>
 
-      <!-- ============ FRIES LABEL ============ -->
-      <a-entity id="labelFries" class="clickable" position="1.5 5.6 -1.5" look-at="[camera]">
-        <a-plane width="1" height="0.35" material="opacity:0; transparent:true"></a-plane>
-        <a-text value="Fries" align="center" color="#fff" width="2" position="0 0 0.01"></a-text>
-      </a-entity>
+      <!-- Ingredient models (positioned behind and above the plate, facing the camera) -->
+      <a-text id="labelMac" value="Mac Salad" position="-1.5 5.2 -1.5" look-at="[camera]" color="white" width="2"
+        visible="false"></a-text>
+      <a-entity id="gbMac" class="clickable" gltf-model="./assets/single_cooked_macaroni/mac.gltf"
+        scale="20.7 20.7 20.7" position="-1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
 
+
+      <a-text id="labelBurg" value="Burger" position="0 4.85 -1.5" look-at="[camera]" color="white" width="2"
+        visible="false"></a-text>
+      <a-entity id="gbBurg" class="clickable" gltf-model="./assets/burger/burger.gltf" scale="1.4 1.4 1.4"
+        position="0 4.65 -1.5" look-at="[camera]" visible="false"></a-entity>
+
+
+      <a-text id="labelFries" value="Fries" position="1.5 5.2 -1.5" look-at="[camera]" color="white" width="2"
+        visible="false"></a-text>
+      <a-entity id="gbFries" class="clickable" gltf-model="./assets/french_fries/fries.gltf" scale="0.05 0.05 0.05"
+        position="1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
     </a-marker>
 
-    <!-- Camera with raycaster that targets .clickable objects -->
-    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable">
-    </a-entity>
+    <!-- Camera -->
+    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
   </a-scene>
 
   <!-- Message Box -->
@@ -209,7 +206,7 @@
     padding: 20px;
     z-index: 1000;
     font-family: sans-serif;
-    transform: translateX(-20px);
+    transform: translateX(-15px);
   ">
 
     <h1 style="font-size: 2em; margin-bottom: 10px;">Welcome to the Garbage Plate AR Experience</h1>

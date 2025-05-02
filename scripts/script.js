@@ -125,9 +125,9 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ── label click handlers ─────────────── */
-    labels.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
-    labels.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
-    labels.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
+    models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
+    models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
+    models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
 
     /* make hideSidebar globally available for the sidebar close button */
     window.hideSidebar = hideSidebar;
