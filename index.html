@@ -10,20 +10,41 @@
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   <style>
-    /* Ensure the video player is responsive */
+    /* Video popup styles */
     #videoPopup {
-      width: 100%;
-      max-width: 600px;
-      /* Maximum width for larger views */
-      box-sizing: border-box;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
       padding: 10px;
+      border-radius: 10px;
+      display: none;
+      z-index: 999;
+      text-align: center;
+      max-width: 90%;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     #gbVideo {
       width: 100%;
-      /* Full width for responsiveness */
+      max-width: 600px;
       height: auto;
-      /* Maintain aspect ratio */
+      border-radius: 8px;
+    }
+
+    .popup-button {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: sans-serif;
+      font-size: 14px;
+      width: 100%;
     }
   </style>
 </head>
@@ -39,82 +60,62 @@
 
     <!-- Custom Marker -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="2.5 2.5 2.5" position="0 0 0" rotation="0 -90 0">
+      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="1.625 1.625 1.625" position="0 0 0" rotation="0 -90 0">
       </a-entity>
     </a-marker>
-
-
 
     <!-- Camera -->
     <a-entity camera></a-entity>
   </a-scene>
 
-  <!--   script link -->
+  <!-- Main interaction script -->
   <script src="./scripts/script.js"></script>
 
-  <!-- pop up for when the model is clicked -->
+  <!-- Click message -->
   <div id="message" style="
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-family: sans-serif;
-  display: none;
-  z-index: 999;">
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: sans-serif;
+    display: none;
+    z-index: 999;">
     This is a Garbage Plate! A local delicacy from Rochester, NY!
   </div>
 
-  <!-- Youtube video of Alex Tahou ("ta-who") detailing the garbage plate -->
-  <div id="videoPopup" style="
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  padding: 10px;
-  border-radius: 10px;
-  display: none;
-  z-index: 999;
-  text-align: center;
-  max-width: 90%;
-  box-sizing: border-box;">
-
-    <button id="closeVideoBtn" style="
-    background: crimson;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    margin-bottom: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: sans-serif;
-    font-size: 14px;
-    width: 100%;">
-      Close Video
-    </button>
-
-    <div style="
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 ratio */
-    height: 0;
-    overflow: hidden;
-    border-radius: 8px;">
-
-      <video id="gbVideo" controls>
-        <source src="assets/GBExplain.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+  <!-- Garbage Plate Facts -->
+<div id="factsBox" style="
+position: absolute;
+top: 70px;
+left: 50%;
+transform: translateX(-50%);
+background: rgba(0,0,0,0.75);
+color: white;
+padding: 10px 15px;
+border-radius: 8px;
+font-family: sans-serif;
+font-size: 14px;
+max-width: 90%;
+display: none;
+z-index: 999;">
+<!-- Placeholder text -->
+<span id="factText">[Placeholder for Garbage Plate history or cultural info]</span>
+</div>
 
 
+  <!-- Local video popup -->
+  <div id="videoPopup">
+    <button id="closeVideoBtn" class="popup-button">Close Video</button>
+    <button id="fullscreenBtn" class="popup-button">Fullscreen</button>
+    <video id="gbVideo" controls>
+      <source src="assets/GBExplain.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
-
-
 
 </body>
 
