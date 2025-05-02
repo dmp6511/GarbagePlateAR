@@ -1,4 +1,4 @@
-/* scripts/script.js – Garbage Plate AR logic (May 2025) */
+/* scripts/script.js – Garbage Plate AR logic (May 2025) */
 
 /* ────────────────────────────
    Utility helpers
@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const infoText = document.getElementById('infoText');
     const audioElement = document.querySelector('audio');
     const plate = document.querySelector('#GBplate');
-    const msg = document.querySelector('#message');
+    const msgBox = document.querySelector('#message');
 
     // Ingredient elements
     const gbMac = document.getElementById('gbMac');
@@ -55,6 +55,22 @@ window.addEventListener('DOMContentLoaded', () => {
     const labelBurg = document.getElementById('labelBurg');
     const labelFries = document.getElementById('labelFries');
 
+    // Define missing variables
+    let activated = false;
+    let spinning = false;
+
+    // Create models and labels objects for easier reference
+    const models = {
+        mac: gbMac,
+        burg: gbBurg,
+        fries: gbFries
+    };
+
+    const labels = {
+        mac: labelMac,
+        burg: labelBurg,
+        fries: labelFries
+    };
 
     // Start button click handler
     startBtn.addEventListener('click', () => {
@@ -65,39 +81,55 @@ window.addEventListener('DOMContentLoaded', () => {
         playBackgroundMusic();
     });
 
-    // plate click handler
-    plate.addEventListener('model-loaded', () => {
+    // Ensure plate is loaded before adding event listeners
+    if (plate) {
+        console.log("Plate element found, setting up event listeners");
+
+        // Add initial instruction text
         addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
 
-        plate.addEventListener('click', () => {
-            if (activated) return;
-            activated = true;
+        // Add click event listener directly
+        plate.addEventListener('click', handlePlateClick);
 
-            /* brief toast */
-            msgBox.style.display = 'block';
-            setTimeout(() => (msgBox.style.display = 'none'), 3000);
-
-            /* spin toggle */
-            if (!spinning) {
-                plate.setAttribute('animation', {
-                    property: 'rotation',
-                    to: '0 90 0',
-                    dur: 8000,
-                    easing: 'linear',
-                    loop: true
-                });
-                spinning = true;
-            }
-
-            /* reveal ingredients + labels */
-            ['mac', 'burg', 'fries'].forEach(key => {
-                models[key].setAttribute('visible', 'true');
-                labels[key].setAttribute('visible', 'true');
-            });
+        // Also listen for model-loaded event to ensure 3D model is ready
+        plate.addEventListener('model-loaded', () => {
+            console.log("Plate model loaded");
+            // Re-add the click listener to be safe
+            plate.addEventListener('click', handlePlateClick);
         });
-    });
+    } else {
+        console.error("Plate element not found!");
+    }
 
+    // Plate click handler function
+    function handlePlateClick() {
+        console.log("Plate clicked!");
 
+        if (activated) return;
+        activated = true;
+
+        /* brief toast */
+        msgBox.style.display = 'block';
+        setTimeout(() => (msgBox.style.display = 'none'), 3000);
+
+        /* spin toggle */
+        if (!spinning) {
+            plate.setAttribute('animation', {
+                property: 'rotation',
+                to: '0 90 0',
+                dur: 8000,
+                easing: 'linear',
+                loop: true
+            });
+            spinning = true;
+        }
+
+        /* reveal ingredients + labels */
+        ['mac', 'burg', 'fries'].forEach(key => {
+            if (models[key]) models[key].setAttribute('visible', 'true');
+            if (labels[key]) labels[key].setAttribute('visible', 'true');
+        });
+    }
 
     // Function to play background music
     function playBackgroundMusic() {
@@ -140,20 +172,24 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(audioBtn);
     }
 
-
-
     // Event listeners for ingredients
-    gbMac.addEventListener('click', () => {
-        showInfo("Mac Salad: A creamy, cold macaroni salad that adds a refreshing contrast to the hot components.");
-    });
+    if (gbMac) {
+        gbMac.addEventListener('click', () => {
+            showInfo("Mac Salad: A creamy, cold macaroni salad that adds a refreshing contrast to the hot components.");
+        });
+    }
 
-    gbBurg.addEventListener('click', () => {
-        showInfo("Burger: Grilled to perfection, the burger patty adds a savory, meaty component to the plate.");
-    });
+    if (gbBurg) {
+        gbBurg.addEventListener('click', () => {
+            showInfo("Burger: Grilled to perfection, the burger patty adds a savory, meaty component to the plate.");
+        });
+    }
 
-    gbFries.addEventListener('click', () => {
-        showInfo("Fries: Crispy home fries are a staple of the Garbage Plate, adding texture and soaking up the sauce.");
-    });
+    if (gbFries) {
+        gbFries.addEventListener('click', () => {
+            showInfo("Fries: Crispy home fries are a staple of the Garbage Plate, adding texture and soaking up the sauce.");
+        });
+    }
 
     // Show info panel with text
     function showInfo(text) {
@@ -165,17 +201,10 @@ window.addEventListener('DOMContentLoaded', () => {
             infoPanel.setAttribute('visible', 'false');
         }, 4000);
     }
-    setTimeout(() => {
-        infoPanel.setAttribute('visible', 'false');
-    }, 4000);
 
     /* hide info panel when tapping elsewhere */
     document.querySelector('a-scene').addEventListener('touchstart', hideInfo);
 });
-
-
-
-
 
 /* ────────────────────────────
    Gesture‑handler component
