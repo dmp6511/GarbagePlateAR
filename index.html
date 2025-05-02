@@ -4,245 +4,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Garbage Plates - AR</title>
+  <title>Garbage Plate AR</title>
 
-  <!-- A-Frame & AR.js -->
+  <!-- ─── Core libs ──────────────────────────────────────────── -->
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
-  <!-- Gesture scripts -->
+  <!-- ─── Extras ─────────────────────────────────────────────── -->
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
   <script src="https://unpkg.com/aframe-gesture-detector@^3.3.0/dist/aframe-gesture-detector.min.js"></script>
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
   <style>
-    #videoPopup {
-      width: 100%;
-      max-width: 600px;
-      box-sizing: border-box;
-      padding: 10px;
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif
     }
 
-    #gbVideo {
-      width: 100%;
-      height: auto;
+    #toast {
+      position: fixed;
+      top: .75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, .75);
+      color: #fff;
+      padding: .5rem 1.25rem;
+      border-radius: 6px;
+      font-size: .95rem;
+      z-index: 999;
+      display: none
+    }
+
+    #watchBtn {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: .75rem 1.25rem;
+      font: 600 1rem sans-serif;
+      background: #ff4500;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 999;
+      animation: pulse 2.4s infinite
     }
 
     @keyframes pulse {
       0% {
-        transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) scale(1)
       }
 
       50% {
-        transform: translateX(-50%) scale(1.1);
+        transform: translateX(-50%) scale(1.08)
       }
 
       100% {
-        transform: translateX(-50%) scale(1);
+        transform: translateX(-50%) scale(1)
       }
     }
 
-    #watchBtn {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #ff4500;
-      color: white;
-      font-size: 16px;
-      padding: 12px 20px;
+    #introOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .95);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1.25rem;
+      z-index: 1000
+    }
+
+    #introOverlay button {
+      padding: .8rem 1.4rem;
+      font-size: 1rem;
+      background: #ff4500;
       border: none;
       border-radius: 8px;
+      color: #fff;
       cursor: pointer;
-      font-family: sans-serif;
-      z-index: 999;
-      animation: pulse 2s infinite;
+      margin-top: 2rem
     }
   </style>
 </head>
 
-<body style="margin: 0; overflow: hidden;">
+<body>
 
-  <!-- AR Scene -->
-  <a-scene embedded arjs vr-mode-ui="enabled: false" renderer="antialias: true; alpha: true" cursor="rayOrigin: mouse">
+  <!-- ◄───── INTRO RIG BEFORE MARKER ──────► -->
+  <a-scene embedded renderer="antialias:true;alpha:true" cursor="rayOrigin:mouse" vr-mode-ui="enabled:false">
+    <!-- AUDIO narration -->
+    <a-assets>
+      <audio id="narration" src="assets/mp3/Audio with Narration.mp3"></audio>
+      <img id="sky1918" src="assets/NTH1918.jpg" />
+      <img id="skyToday" src="assets/NTH2025.webp" />
+    </a-assets>
 
-    <!-- look at script -->
-    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <a-entity id="introRig">
+      <!-- 1918 sky -->
+      <a-sky id="sky" src="#sky1918" color="#fff"></a-sky>
 
+      <!-- Brick building model (placeholder box) -->
+      <a-box id="tahou" depth="1.5" height="1" width="2" color="#8b4c39" position="0 0.5 -4"></a-box>
 
-    <!-- Lighting -->
-    <a-entity light="type: ambient; intensity: 1"></a-entity>
-    <a-entity light="type: directional; intensity: 0.5" position="0 1 1"></a-entity>
+      <!-- Neon sign text (hidden then fades) -->
+      <a-text id="neon" value="Nick Tahou Hots" color="#ff3300" align="center" width="4" position="0 1.3 -4"
+        opacity="0"></a-text>
 
-
-    <!-- Floating info panel (starts hidden) -->
-    <a-entity id="infoPanel" visible="false" position="0 8 -1.2" look-at="[camera]">
-      <a-plane width="1.5" height="0.7" color="#111" opacity="0.8" radius="0.05"></a-plane>
-      <a-text id="infoText" value="This is the informational tab" align="center" color="#fff" width="1.4"
-        position="0 8 1.02">
-      </a-text>
+      <!-- Dolly camera in by animating tahou toward camera -->
+      <a-animation attribute="position" dur="3000" to="0 0.5 -2" fill="forwards" begin="voPlaying"></a-animation>
     </a-entity>
 
-    <!-- Marker with model and text container -->
+    <!-- Play VO once scene loads -->
+    <a-entity id="vo" sound="src:#narration;autoplay:true"></a-entity>
+
+    <!-- Fire events for timing -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const vo = document.querySelector('#vo');
+        const neon = document.querySelector('#neon');
+        const sky = document.querySelector('#sky');
+        // when VO starts
+        vo.addEventListener('sound-played', () => {
+          document.querySelector('#introRig').emit('voPlaying');
+          // fade neon after 9s
+          setTimeout(() => neon.setAttribute('animation', 'property:opacity;from:0;to:1;dur:800'), 9000);
+        });
+        // when VO ends – show start btn
+        vo.addEventListener('sound-ended', () => {
+          document.getElementById('introOverlay').style.display = 'flex';
+        });
+        // switch sky to today at 12s
+        setTimeout(() => sky.setAttribute('src', '#skyToday'), 12000);
+      });
+    </script>
+
+    <!-- Marker content (initially hidden by overlay) -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-
-      <a-entity id="text-container" position="0 2.5 0" look-at="[camera]"> </a-entity>
-
-
-      <!-- Garbage Plate (scaled down and lowered) -->
+      <a-entity id="text-container" position="0 2.5 0" look-at="[camera]"></a-entity>
       <a-entity id="gbPlate" class="clickable" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 2 0"
-        rotation="-45 0 0" gesture-detector gesture-handler>
-      </a-entity>
-
-
-
-      <!-- Ingredient models (positioned behind and above the plate, facing the camera) -->
-      <a-text id="labelMac" value="Mac Salad" position="-1.5 5.2 -1.5" look-at="[camera]" color="white" width="2"
-        visible="false"></a-text>
+        rotation="-45 0 0" gesture-detector gesture-handler></a-entity>
+      <!-- ingredient models & labels (hidden) -->
       <a-entity id="gbMac" class="clickable" gltf-model="./assets/single_cooked_macaroni/mac.gltf"
         scale="20.7 20.7 20.7" position="-1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
-
-
-      <a-text id="labelBurg" value="Burger" position="0 4.85 -1.5" look-at="[camera]" color="white" width="2"
+      <a-text id="labelMac" value="Mac Salad" width="2" position="-1.5 5.15 -1.5" look-at="[camera]" color="#fff"
         visible="false"></a-text>
       <a-entity id="gbBurg" class="clickable" gltf-model="./assets/burger/burger.gltf" scale="1.4 1.4 1.4"
         position="0 4.65 -1.5" look-at="[camera]" visible="false"></a-entity>
-
-
-      <a-text id="labelFries" value="Fries" position="1.5 5.2 -1.5" look-at="[camera]" color="white" width="2"
+      <a-text id="labelBurg" value="Burger" width="2" position="0 5 -1.5" look-at="[camera]" color="#fff"
         visible="false"></a-text>
       <a-entity id="gbFries" class="clickable" gltf-model="./assets/french_fries/fries.gltf" scale="0.05 0.05 0.05"
         position="1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
+      <a-text id="labelFries" value="Fries" width="2" position="1.5 5.15 -1.5" look-at="[camera]" color="#fff"
+        visible="false"></a-text>
     </a-marker>
 
-    <!-- Camera -->
-    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
+    <!-- camera / raycaster -->
+    <a-entity camera raycaster="objects: .clickable" cursor="rayOrigin: mouse"></a-entity>
   </a-scene>
 
-  <!-- Message Box -->
-  <div id="message" style="
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.7);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-family: sans-serif;
-    display: none;
-    z-index: 999;">
-    These are the primary ingredients of a Garbage Plate. Tap on any ingredient to learn more about it!
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- Pulsing CTA -->
+  <button id="watchBtn" onclick="window.open('video.html','_blank')">Watch one be made!</button>
+
+  <!-- Intro overlay (shown when VO ends) -->
+  <div id="introOverlay" style="display:none">
+    <h1 style="font-size:2rem;margin-bottom:0.5rem">Start Exploring!</h1>
+    <button onclick="this.parentElement.style.display='none'">Enter AR</button>
   </div>
 
-  <!-- Sidebar Message -->
-  <div id="sidebar" style="
-    position: fixed;
-    top: 0;
-    right: -260px; /* hidden off-screen by default */
-    height: 100%;
-    width: 260px;
-    background: rgba(0, 0, 0, 0.95);
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    font-family: sans-serif;
-    z-index: 999;
-    transition: right 0.4s ease;
-    overflow-y: auto;
-  ">
-    <h2 style="margin-top: 0;">Ingredient</h2>
-    <p id="sidebarText">Info will appear here</p>
-
-    <!-- 🔗 Redirect Button -->
-    <button onclick="window.open('https://www.originalgarbageplate.com', '_blank')" style="
-      margin-top: 20px;
-      padding: 10px 16px;
-      font-size: 14px;
-      background: #ff6347;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;">
-      Visit the Restaurant
-    </button>
-
-    <!-- ❌ Close Button -->
-    <button onclick="hideSidebar()" style="
-      margin-top: 10px;
-      padding: 8px 16px;
-      font-size: 14px;
-      background: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;">
-      Close
-    </button>
-  </div>
-
-
-  </div>
-
-  <!-- Watch Video Button -->
-  <button onclick="window.open('video.html', '_blank')" style="
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ff4500;
-    color: white;
-    font-size: 16px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: sans-serif;
-    z-index: 999;">
-    🍳 Watch It Being Made!
-  </button>
-
-  <!-- Intro Overlay -->
-  <div id="introOverlay" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.95);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    z-index: 1000;
-    font-family: sans-serif;
-    transform: translateX(-20px);
-  ">
-
-    <h1 style="font-size: 2em; margin-bottom: 10px;">Welcome to the Garbage Plate AR Experience</h1>
-    <p style="max-width: 600px; font-size: 1.1em; margin-bottom: 30px;">
-      Explore Rochester’s most iconic dish in augmented reality. Tap the plate to learn more about each ingredient—and
-      don’t forget to watch how it’s made!
-    </p>
-
-    <button onclick="document.getElementById('introOverlay').style.display='none'" style="
-      padding: 12px 20px;
-      font-size: 16px;
-      background: #ff4500;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-    ">Start</button>
-
-  </div>
-
-
-
+  <!-- Logic -->
   <script src="./scripts/script.js"></script>
 </body>
 

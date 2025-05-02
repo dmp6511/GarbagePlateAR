@@ -77,16 +77,17 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* ── label click events ───────────────── */
-    document.querySelector('#infoPanel').addEventListener('click', hideInfo);
 
     models.mac.addEventListener('click', () => {
+        alert('Mac clicked!');
         showInfo('Macaroni Salad\nA creamy, tangy side dish that adds a cool contrast to the plate.\n\nIngredients: Macaroni, mayo, mustard, celery, onion, spices.');
     });
     models.burg.addEventListener('click', () => {
+        alert('Burger clicked!');
         showInfo('Hamburger\nA juicy beef patty, grilled to perfection and served hot.\n\nIngredients: Ground beef, spices, bun.');
     });
     models.fries.addEventListener('click', () => {
+        alert('Fries clicked!');
         showInfo('French Fries\nCrispy, golden fries that are the perfect side to any plate.\n\nIngredients: Potatoes, oil, salt.');
     });
 
