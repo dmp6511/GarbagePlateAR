@@ -91,8 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 message.style.display = 'none';
             }, 3000);
 
-            // ✅ Recommended: open external video page
-            window.open('video.html', '_blank');
+
 
             // Toggle rotation
             if (!isSpinning) {
@@ -113,6 +112,11 @@ window.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#gbMac').setAttribute('visible', 'true');
             document.querySelector('#gbBurg').setAttribute('visible', 'true');
             document.querySelector('#gbFries').setAttribute('visible', 'true');
+
+            // show labels
+            document.querySelector('#labelMac').setAttribute('visible', 'true');
+            document.querySelector('#labelBurg').setAttribute('visible', 'true');
+            document.querySelector('#labelFries').setAttribute('visible', 'true');
         });
     });
 });
