@@ -61,6 +61,19 @@ function addText(content, position = { x: 0, y: 0.5, z: -1 }) {
     container.appendChild(textEl);
 }
 
+function showSidebar(text) {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarText = document.getElementById('sidebarText');
+    sidebarText.textContent = text;
+    sidebar.style.right = '0';
+}
+
+function hideSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.style.right = '-260px';
+}
+
+
 window.addEventListener('DOMContentLoaded', () => {
     // Initial AR text labels
     addText("Garbage Plate", { x: 0, y: 3.5, z: 0.8 });
@@ -119,4 +132,21 @@ window.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#labelFries').setAttribute('visible', 'true');
         });
     });
+
+    // click events for ingredients
+    // when clicked, open sidebar with ingredient info
+    // Ingredient click listeners
+    document.querySelector('#gbMac').addEventListener('click', () => {
+        showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple.");
+    });
+
+    document.querySelector('#gbBurg').addEventListener('click', () => {
+        showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options.");
+    });
+
+    document.querySelector('#gbFries').addEventListener('click', () => {
+        showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate.");
+    });
+
+
 });
