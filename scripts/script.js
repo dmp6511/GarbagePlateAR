@@ -60,6 +60,39 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Play background music
         playBackgroundMusic();
+
+        // gbPlate 
+        plate.addEventListener('model-loaded', () => {
+            addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
+
+            plate.addEventListener('click', () => {
+                if (activated) return;
+                activated = true;
+
+                /* brief toast */
+                msgBox.style.display = 'block';
+                setTimeout(() => (msgBox.style.display = 'none'), 3000);
+
+                /* spin toggle */
+                if (!spinning) {
+                    plate.setAttribute('animation', {
+                        property: 'rotation',
+                        to: '0 90 0',
+                        dur: 8000,
+                        easing: 'linear',
+                        loop: true
+                    });
+                    spinning = true;
+                }
+
+                /* reveal ingredients + labels */
+                ['mac', 'burg', 'fries'].forEach(key => {
+                    models[key].setAttribute('visible', 'true');
+                    labels[key].setAttribute('visible', 'true');
+                });
+            });
+        });
+
     });
 
     // Function to play background music
