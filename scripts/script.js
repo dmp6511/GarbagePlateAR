@@ -66,6 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 const factsBox = document.getElementById('factsBox');
 const factText = document.getElementById('factText');
+const toggleButton = document.getElementById('toggleFacts'); // Button to toggle facts visibility
 
 // Placeholder facts array
 const facts = [
@@ -76,6 +77,7 @@ const facts = [
 ];
 
 let currentFact = 0;
+let factRotationActive = false; // Track if the rotation is active
 
 // Show rotating facts (optional timed loop)
 function showNextFact() {
@@ -85,7 +87,26 @@ function showNextFact() {
   currentFact = (currentFact + 1) % facts.length;
 
   // Automatically cycle to the next fact every 6 seconds
-  setTimeout(() => {
-    if (factsBox.style.display === 'block') showNextFact();
-  }, 6000);
+  if (factRotationActive) {
+    setTimeout(() => {
+      if (factsBox.style.display === 'block') showNextFact();
+    }, 6000);
+  }
 }
+
+// Toggle facts visibility and rotation
+function toggleFacts() {
+  if (factsBox.style.display === 'block') {
+    factsBox.style.display = 'none';
+    factRotationActive = false; // Stop rotation
+    toggleButton.textContent = 'Show Facts';
+  } else {
+    factsBox.style.display = 'block';
+    factRotationActive = true; // Start rotation
+    toggleButton.textContent = 'Hide Facts';
+    showNextFact(); // Start showing facts
+  }
+}
+
+// Add event listener to the toggle button
+toggleButton.addEventListener('click', toggleFacts);
