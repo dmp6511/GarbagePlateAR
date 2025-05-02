@@ -26,10 +26,6 @@ function hideInfo() {
 
 
 window.addEventListener('DOMContentLoaded', () => {
-    /* Intro text above marker */
-    addText('Garbage Plate', { x: 0, y: 3.5, z: 0.8 });
-    addText('A Rochester, NY classic', { x: 0, y: 2.7, z: 0.8 });
-    addText('Meat, mac salad, fries & more', { x: 0, y: 2.4, z: 0.8 });
 
     const plate = document.querySelector('#gbPlate');
     const msgBox = document.querySelector('#message');
