@@ -9,21 +9,22 @@
   <!-- A-Frame & AR.js -->
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+  <!-- Gesture scripts -->
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-gesture-detector@^3.3.0/dist/aframe-gesture-detector.min.js"></script>
+
   <style>
-    /* Ensure the video player is responsive */
     #videoPopup {
       width: 100%;
       max-width: 600px;
-      /* Maximum width for larger views */
       box-sizing: border-box;
       padding: 10px;
     }
 
     #gbVideo {
       width: 100%;
-      /* Full width for responsiveness */
       height: auto;
-      /* Maintain aspect ratio */
     }
   </style>
 </head>
@@ -37,84 +38,157 @@
     <a-entity light="type: ambient; intensity: 1"></a-entity>
     <a-entity light="type: directional; intensity: 0.5" position="0 1 1"></a-entity>
 
-    <!-- Custom Marker -->
+    <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="2.5 2.5 2.5" position="0 0 0" rotation="0 -90 0">
+      <a-entity 
+        id="gbPlate"
+        gltf-model="./assets/gbPlate.gltf"
+        scale="2.5 2.5 2.5"
+        position="0 0 0"
+        rotation="0 -90 0"
+        gesture-detector
+        gesture-handler>
       </a-entity>
+
+      <a-entity id="text-container" position="0 0 0"></a-entity>
     </a-marker>
-
-
 
     <!-- Camera -->
     <a-entity camera></a-entity>
   </a-scene>
 
-  <!--   script link -->
+  <!-- Gesture handler with snap-back logic -->
+  <script>
+    AFRAME.registerComponent('gesture-handler', {
+      schema: {
+        enabled: { default: true },
+        resetDelay: { default: 2000 }
+      },
+      init: function () {
+        this.initialRotation = this.el.getAttribute('rotation');
+        this.initialScale = this.el.getAttribute('scale');
+        this.resetTimeout = null;
+
+        this.handleRotation = this.handleRotation.bind(this);
+        this.handleScale = this.handleScale.bind(this);
+        this.scheduleReset = this.scheduleReset.bind(this);
+
+        this.el.addEventListener('onefingermove', this.handleRotation);
+        this.el.addEventListener('twofingermove', this.handleScale);
+        this.el.addEventListener('touchend', this.scheduleReset);
+      },
+      remove: function () {
+        this.el.removeEventListener('onefingermove', this.handleRotation);
+        this.el.removeEventListener('twofingermove', this.handleScale);
+        this.el.removeEventListener('touchend', this.scheduleReset);
+      },
+      handleRotation: function (event) {
+        const rotation = this.el.getAttribute('rotation');
+        this.el.setAttribute('rotation', {
+          x: rotation.x,
+          y: rotation.y + event.detail.positionChange.x * 2,
+          z: rotation.z
+        });
+      },
+      handleScale: function (event) {
+        const scale = this.el.getAttribute('scale');
+        const delta = event.detail.spreadChange / 200;
+        this.el.setAttribute('scale', {
+          x: scale.x + delta,
+          y: scale.y + delta,
+          z: scale.z + delta
+        });
+      },
+      scheduleReset: function () {
+        clearTimeout(this.resetTimeout);
+        this.resetTimeout = setTimeout(() => {
+          this.el.setAttribute('rotation', this.initialRotation);
+          this.el.setAttribute('scale', this.initialScale);
+        }, this.data.resetDelay);
+      }
+    });
+  </script>
+
+  <!-- Dynamic text insertion -->
+  <script>
+    function addText(content, position = { x: 0, y: 0.5, z: -1 }) {
+      const container = document.querySelector('#text-container');
+
+      const textEl = document.createElement('a-text');
+      textEl.setAttribute('value', content);
+      textEl.setAttribute('color', '#222');
+      textEl.setAttribute('align', 'center');
+      textEl.setAttribute('width', 2);
+      textEl.setAttribute('position', `${position.x} ${position.y} ${position.z}`);
+      textEl.setAttribute('side', 'double');
+      textEl.setAttribute('shader', 'msdf');
+      textEl.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json');
+
+      container.appendChild(textEl);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      addText("Garbage Plate", { x: 0, y: 1, z: 0 });
+      addText("A Rochester, NY classic", { x: 0, y: 0.7, z: 0 });
+      addText("Meat, mac salad, fries & more", { x: 0, y: 0.4, z: 0 });
+    });
+  </script>
+
+  <!-- Optional external script -->
   <script src="./scripts/script.js"></script>
 
-  <!-- pop up for when the model is clicked -->
+  <!-- Message Box -->
   <div id="message" style="
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-family: sans-serif;
-  display: none;
-  z-index: 999;">
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: sans-serif;
+    display: none;
+    z-index: 999;">
     This is a Garbage Plate! A local delicacy from Rochester, NY!
   </div>
 
-  <!-- Youtube video of Alex Tahou ("ta-who") detailing the garbage plate -->
+  <!-- Video Popup -->
   <div id="videoPopup" style="
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  padding: 10px;
-  border-radius: 10px;
-  display: none;
-  z-index: 999;
-  text-align: center;
-  max-width: 90%;
-  box-sizing: border-box;">
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 10px;
+    border-radius: 10px;
+    display: none;
+    z-index: 999;
+    text-align: center;
+    max-width: 90%;
+    box-sizing: border-box;">
 
     <button id="closeVideoBtn" style="
-    background: crimson;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    margin-bottom: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: sans-serif;
-    font-size: 14px;
-    width: 100%;">
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: sans-serif;
+      font-size: 14px;
+      width: 100%;">
       Close Video
     </button>
 
-    <div style="
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 ratio */
-    height: 0;
-    overflow: hidden;
-    border-radius: 8px;">
-
+    <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
       <video id="gbVideo" controls>
         <source src="assets/GBExplain.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
-
-
   </div>
-
-
 
 </body>
 
