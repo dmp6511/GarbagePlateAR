@@ -25,13 +25,11 @@ function hideSidebar() {
 
 
 window.addEventListener('DOMContentLoaded', () => {
-    /* Intro text above marker */
-    addText('Garbage Plate', { x: 0, y: 3.5, z: 0.8 });
-    addText('A Rochester, NY classic', { x: 0, y: 2.7, z: 0.8 });
-    addText('Meat, mac salad, fries & more', { x: 0, y: 2.4, z: 0.8 });
-
     const plate = document.querySelector('#gbPlate');
     const msgBox = document.querySelector('#message');
+    const startBtn = document.querySelector('#startBtn');
+    const audioElement = document.querySelector('#audioElement');
+    const introOverlay = document.querySelector('#introOverlay');
 
     /* label + model entities */
     const labels = {
@@ -48,38 +46,47 @@ window.addEventListener('DOMContentLoaded', () => {
     let spinning = false;
     let activated = false;          // ensure plate tap logic runs once
 
-    /* ── plate loaded ────────────────────── */
-    plate.addEventListener('model-loaded', () => {
-        addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
+    startBtn.addEventListener('click', () => {
+        /* hide start button */
+        introOverlay.style.display = 'none';
 
-        plate.addEventListener('click', () => {
-            if (activated) return;
-            activated = true;
+        // play audio
+        audioElement.play().catch(err => {
+            console.error('Error playing audio:', err);
 
-            /* brief toast */
-            msgBox.style.display = 'block';
-            setTimeout(() => (msgBox.style.display = 'none'), 3000);
+            /* ── plate loaded ────────────────────── */
+            plate.addEventListener('model-loaded', () => {
+                addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
 
-            /* spin toggle */
-            if (!spinning) {
-                plate.setAttribute('animation', {
-                    property: 'rotation',
-                    to: '0 90 0',
-                    dur: 8000,
-                    easing: 'linear',
-                    loop: true
+                plate.addEventListener('click', () => {
+                    if (activated) return;
+                    activated = true;
+
+                    /* brief toast */
+                    msgBox.style.display = 'block';
+                    setTimeout(() => (msgBox.style.display = 'none'), 3000);
+
+                    /* spin toggle */
+                    if (!spinning) {
+                        plate.setAttribute('animation', {
+                            property: 'rotation',
+                            to: '0 90 0',
+                            dur: 8000,
+                            easing: 'linear',
+                            loop: true
+                        });
+                        spinning = true;
+                    }
+
+                    /* reveal ingredients + labels */
+                    ['mac', 'burg', 'fries'].forEach(key => {
+                        models[key].setAttribute('visible', 'true');
+                        labels[key].setAttribute('visible', 'true');
+                    });
                 });
-                spinning = true;
-            }
-
-            /* reveal ingredients + labels */
-            ['mac', 'burg', 'fries'].forEach(key => {
-                models[key].setAttribute('visible', 'true');
-                labels[key].setAttribute('visible', 'true');
             });
         });
     });
-
     /* ── label click handlers ─────────────── */
     models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
     models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
