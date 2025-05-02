@@ -45,20 +45,20 @@
     <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
       <!-- Garbage Plate (scaled down and lowered) -->
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 0.1 0"
-        rotation="-45 0 0" gesture-detector gesture-handler>
+      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="0.6 0.6 0.6" position="0 2 0" rotation="-45 0 0"
+        gesture-detector gesture-handler>
       </a-entity>
 
       <!-- Text container (placed above the plate) -->
       <a-entity id="text-container" position="0 8 0"></a-entity>
 
       <!-- Ingredient models (positioned behind and above the plate, facing the camera) -->
-      <a-entity id="gbMac" gltf-model="./assets/single_cooked_macaroni/mac.gltf" scale="5.7 5.7 5.7"
-        position="-1.5 5.15 -1.5" look-at="[camera]"></a-entity>
-      <a-entity id="gbBurg" gltf-model="./assets/burger/burger.gltf" scale="1.4 1.4 1.4" position="0 5 -1.5"
+      <a-entity id="gbMac" gltf-model="./assets/single_cooked_macaroni/mac.gltf" scale="8.7 8.7 8.7"
+        position="-1.5 5.15 1.5" look-at="[camera]"></a-entity>
+      <a-entity id="gbBurg" gltf-model="./assets/burger/burger.gltf" scale="1.4 1.4 1.4" position="0 5 1.5"
         look-at="[camera]"></a-entity>
       <a-entity id="gbFries" gltf-model="./assets/french_fries/fries.gltf" scale="0.03 0.03 0.03"
-        position="1.5 5.15 -1.5" look-at="[camera]"></a-entity>
+        position="1.5 5.15 1.5" look-at="[camera]"></a-entity>
     </a-marker>
 
     <!-- Camera -->
