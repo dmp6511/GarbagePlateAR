@@ -40,8 +40,8 @@
 
     <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="2.5 2.5 2.5" position="0 0 0" rotation="0 -90 0"
-        gesture-detector gesture-handler>
+      <a-entity id="gbPlate" gltf-model="./assets/gbPlate.gltf" scale="1.625 1.625 1.625" position="0 0 0"
+        rotation="0 -90 0" gesture-detector gesture-handler>
       </a-entity>
 
       <a-entity id="text-container" position="0 0 0"></a-entity>
@@ -50,86 +50,6 @@
     <!-- Camera -->
     <a-entity camera></a-entity>
   </a-scene>
-
-  <!-- Gesture handler with snap-back logic -->
-  <script>
-    AFRAME.registerComponent('gesture-handler', {
-      schema: {
-        enabled: { default: true },
-        resetDelay: { default: 2000 }
-      },
-      init: function () {
-        this.initialRotation = this.el.getAttribute('rotation');
-        this.initialScale = this.el.getAttribute('scale');
-        this.resetTimeout = null;
-
-        this.handleRotation = this.handleRotation.bind(this);
-        this.handleScale = this.handleScale.bind(this);
-        this.scheduleReset = this.scheduleReset.bind(this);
-
-        this.el.addEventListener('onefingermove', this.handleRotation);
-        this.el.addEventListener('twofingermove', this.handleScale);
-        this.el.addEventListener('touchend', this.scheduleReset);
-      },
-      remove: function () {
-        this.el.removeEventListener('onefingermove', this.handleRotation);
-        this.el.removeEventListener('twofingermove', this.handleScale);
-        this.el.removeEventListener('touchend', this.scheduleReset);
-      },
-      handleRotation: function (event) {
-        const rotation = this.el.getAttribute('rotation');
-        this.el.setAttribute('rotation', {
-          x: rotation.x,
-          y: rotation.y + event.detail.positionChange.x * 2,
-          z: rotation.z
-        });
-      },
-      handleScale: function (event) {
-        const scale = this.el.getAttribute('scale');
-        const delta = event.detail.spreadChange / 200;
-        this.el.setAttribute('scale', {
-          x: scale.x + delta,
-          y: scale.y + delta,
-          z: scale.z + delta
-        });
-      },
-      scheduleReset: function () {
-        clearTimeout(this.resetTimeout);
-        this.resetTimeout = setTimeout(() => {
-          this.el.setAttribute('rotation', this.initialRotation);
-          this.el.setAttribute('scale', this.initialScale);
-        }, this.data.resetDelay);
-      }
-    });
-  </script>
-
-  <!-- Dynamic text insertion -->
-  <script>
-    function addText(content, position = { x: 0, y: 0.5, z: -1 }) {
-      const container = document.querySelector('#text-container');
-
-      const textEl = document.createElement('a-text');
-      textEl.setAttribute('value', content);
-      textEl.setAttribute('color', '#222');
-      textEl.setAttribute('align', 'center');
-      textEl.setAttribute('width', 2);
-      textEl.setAttribute('position', `${position.x} ${position.y} ${position.z}`);
-      textEl.setAttribute('side', 'double');
-      textEl.setAttribute('shader', 'msdf');
-      textEl.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json');
-
-      container.appendChild(textEl);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      addText("Garbage Plate", { x: 0, y: 5, z: 0 });
-      addText("A Rochester, NY classic", { x: 0, y: 5.7, z: 0 });
-      addText("Meat, mac salad, fries & more", { x: 0, y: 5.4, z: 0 });
-    });
-  </script>
-
-  <!-- Optional external script -->
-  <script src="./scripts/script.js"></script>
 
   <!-- Message Box -->
   <div id="message" style="
@@ -150,7 +70,7 @@
   <!-- Video Popup -->
   <div id="videoPopup" style="
     position: absolute;
-    bottom: 10px;
+    top: 60px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
@@ -185,6 +105,7 @@
     </div>
   </div>
 
+  <script src="./scripts/script.js"></script>
 </body>
 
 </html>
