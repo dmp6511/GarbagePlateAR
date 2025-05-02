@@ -38,109 +38,117 @@ function hideInfo() {
    Main runtime
 ──────────────────────────── */
 window.addEventListener('DOMContentLoaded', () => {
-    /* DOM refs */
-    const plate = document.getElementById('gbPlate');
-    const msgBox = document.getElementById('message');
     const startBtn = document.getElementById('startBtn');
     const introOverlay = document.getElementById('introOverlay');
-    const introAudio = document.getElementById('introAudio');
+    const message = document.getElementById('message');
+    const infoPanel = document.getElementById('infoPanel');
+    const infoText = document.getElementById('infoText');
+    const audioElement = document.querySelector('audio');
 
-    const labels = {
-        mac: document.getElementById('labelMac'),
-        burg: document.getElementById('labelBurg'),
-        fries: document.getElementById('labelFries')
-    };
+    // Ingredient elements
+    const gbMac = document.getElementById('gbMac');
+    const gbBurg = document.getElementById('gbBurg');
+    const gbFries = document.getElementById('gbFries');
+    const labelMac = document.getElementById('labelMac');
+    const labelBurg = document.getElementById('labelBurg');
+    const labelFries = document.getElementById('labelFries');
 
-    const models = {
-        mac: document.getElementById('gbMac'),
-        burg: document.getElementById('gbBurg'),
-        fries: document.getElementById('gbFries')
-    };
+    // Start button click handler
+    startBtn.addEventListener('click', () => {
+        // Hide intro overlay
+        introOverlay.style.display = 'none';
 
-    if (introAudio) introAudio.load(); // Preload audio
+        // Play background music
+        playBackgroundMusic();
 
-    /* ---------- Intro audio ---------- */
-    function playIntroAudio() {
-        if (!introAudio) return;
-        introAudio.currentTime = 0; // Reset to start
-        introAudio.volume = 0.5; // Set volume to 50%
-        const p = introAudio.play();
-        if (p && p.catch) {
-            p.catch(() => {
-                // Handle play promise rejection (e.g., user interaction required)
-                console.warn('Audio playback was prevented. User interaction may be required.');
+        // Show message about ingredients
+        setTimeout(() => {
+            message.style.display = 'block';
+
+            // Show ingredients after a delay
+            setTimeout(() => {
+                gbMac.setAttribute('visible', 'true');
+                gbBurg.setAttribute('visible', 'true');
+                gbFries.setAttribute('visible', 'true');
+                labelMac.setAttribute('visible', 'true');
+                labelBurg.setAttribute('visible', 'true');
+                labelFries.setAttribute('visible', 'true');
+            }, 1000);
+
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }, 500);
+    });
+
+    // Function to play background music
+    function playBackgroundMusic() {
+        // Some browsers require user interaction before playing audio
+        audioElement.volume = 0.5; // Set volume to 50%
+        audioElement.loop = true; // Loop the audio
+
+        // Play the audio and handle any errors
+        const playPromise = audioElement.play();
+
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Audio playback failed: ", error);
+                // Create a play button if autoplay fails
+                createAudioPlayButton();
             });
         }
     }
 
-    /* ---------- Intro overlay ---------- */
-    if (startBtn) {
-        /* support both click (desktop) and touchend (mobile) */
-        ['click', 'touchend'].forEach(ev => {
-            startBtn.addEventListener(ev, e => {
-                e.preventDefault();
-                /* hide overlay */
-                if (introOverlay) introOverlay.style.display = 'none';
-                playIntroAudio();
-            }, { once: true });   // run once only
+    // Create a play button if autoplay fails due to browser restrictions
+    function createAudioPlayButton() {
+        const audioBtn = document.createElement('button');
+        audioBtn.textContent = '🔊 Play Music';
+        audioBtn.style.position = 'absolute';
+        audioBtn.style.top = '10px';
+        audioBtn.style.right = '10px';
+        audioBtn.style.padding = '8px 12px';
+        audioBtn.style.background = '#ff4500';
+        audioBtn.style.color = 'white';
+        audioBtn.style.border = 'none';
+        audioBtn.style.borderRadius = '4px';
+        audioBtn.style.zIndex = '1000';
+        audioBtn.style.cursor = 'pointer';
+
+        audioBtn.addEventListener('click', () => {
+            audioElement.play();
+            audioBtn.style.display = 'none';
         });
+
+        document.body.appendChild(audioBtn);
     }
 
-    /* ---------- Plate interaction ---------- */
-    let spinning = false;
-    let activated = false;
-
-    plate.addEventListener('model-loaded', () => {
-        /* display helper text once model is ready */
-        addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
-
-        plate.addEventListener('click', () => {
-            if (activated) return;
-            activated = true;
-
-            /* toast message */
-            msgBox.style.display = 'block';
-            setTimeout(() => (msgBox.style.display = 'none'), 3000);
-
-            /* start spin animation */
-            if (!spinning) {
-                plate.setAttribute('animation', {
-                    property: 'rotation',
-                    to: '0 90 0',
-                    dur: 8000,
-                    easing: 'linear',
-                    loop: true
-                });
-                spinning = true;
-            }
-
-            /* show all ingredient meshes + labels */
-            Object.values(models).forEach(m => m.setAttribute('visible', 'true'));
-            Object.values(labels).forEach(l => l.setAttribute('visible', 'true'));
-        });
+    // Event listeners for ingredients
+    gbMac.addEventListener('click', () => {
+        showInfo("Mac Salad: A creamy, cold macaroni salad that adds a refreshing contrast to the hot components.");
     });
 
-    /* ---------- Ingredient click events ---------- */
-    models.mac.addEventListener('click', () => {
-        showInfo(
-            'Macaroni Salad\nA creamy, tangy side that cools the plate.\n' +
-            'Ingredients: Macaroni, mayo, mustard, celery, onion, spices.'
-        );
+    gbBurg.addEventListener('click', () => {
+        showInfo("Burger: Grilled to perfection, the burger patty adds a savory, meaty component to the plate.");
     });
 
-    models.burg.addEventListener('click', () => {
-        showInfo(
-            'Hamburger Patty\nJuicy beef grilled to perfection.\n' +
-            'Ingredients: Ground beef, seasoning.'
-        );
+    gbFries.addEventListener('click', () => {
+        showInfo("Fries: Crispy home fries are a staple of the Garbage Plate, adding texture and soaking up the sauce.");
     });
 
-    models.fries.addEventListener('click', () => {
-        showInfo(
-            'French Fries\nCrispy golden potatoes with a dash of salt.\n' +
-            'Ingredients: Potatoes, oil, salt.'
-        );
-    });
+    // Show info panel with text
+    function showInfo(text) {
+        infoText.setAttribute('value', text);
+        infoPanel.setAttribute('visible', 'true');
+
+        // Hide info panel after 4 seconds
+        setTimeout(() => {
+            infoPanel.setAttribute('visible', 'false');
+        }, 4000);
+    }
+    setTimeout(() => {
+        infoPanel.setAttribute('visible', 'false');
+    }, 4000);
 
     /* hide info panel when tapping elsewhere */
     document.querySelector('a-scene').addEventListener('touchstart', hideInfo);
