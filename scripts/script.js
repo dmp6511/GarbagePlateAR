@@ -81,14 +81,18 @@ window.addEventListener('DOMContentLoaded', () => {
         ['mac', 'burg', 'fries'].forEach(key => {
             models[key].setAttribute('visible', 'true');
             labels[key].setAttribute('visible', 'true');
+
+
         });
+
+        // models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
+        // models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
+        // models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
     });
 
 });
-/* ── label click handlers ─────────────── */
-// models.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
-// models.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
-// models.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
+
+
 
 
 
