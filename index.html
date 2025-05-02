@@ -87,32 +87,47 @@
     This is a Garbage Plate! A local delicacy from Rochester, NY!
   </div>
 
-  <button id="toggleFacts">Show Facts</button>
+  <button id="toggleFacts" style="
+    position: fixed;
+    bottom: 20px; /* Place the button near the bottom of the screen */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-family: sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it is above other elements */
+  ">
+    Show Facts
+  </button>
   <div id="factsBox" style="
-  position: absolute;
-  top: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.75);
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-family: sans-serif;
-  font-size: 14px;
-  max-width: 90%;
-  display: none;
-  z-index: 999;">
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: sans-serif;
+    font-size: 14px;
+    max-width: 90%;
+    display: none;
+    z-index: 999;">
     <p id="factText"></p>
   </div>
 
 
   <!-- Local video popup -->
   <div id="videoPopup">
-    <button id="closeVideoBtn" class="popup-button">Close Video</button>
-    <button id="fullscreenBtn" class="popup-button">Fullscreen</button>
     <video id="gbVideo" controls>
       <source src="assets/GBExplain.mp4" type="video/mp4">
       Your browser does not support the video tag.
+      <button id="closeVideoBtn" class="popup-button">Close Video</button>
     </video>
   </div>
 

@@ -61,52 +61,54 @@ window.addEventListener('DOMContentLoaded', () => {
             alert("Fullscreen not supported.");
         }
     });
+
+    const factsBox = document.getElementById('factsBox');
+    const factText = document.getElementById('factText');
+    const toggleButton = document.getElementById('toggleFacts'); // Button to toggle facts visibility
+
+    // Placeholder facts array
+    const facts = [
+        "The Garbage Plate was created by Nick Tahou Hots in Rochester, NY.",
+        "It traditionally includes a mix of home fries, mac salad, meat, and hot sauce.",
+        "The name 'Garbage Plate' came from college students asking for 'one of those garbage plates.'",
+        "Garbage Plates are a staple for late-night eats and Rochester food culture."
+    ];
+
+    let currentFact = 0;
+    let factRotationActive = false; // Track if the rotation is active
+
+    // Show rotating facts (optional timed loop)
+    function showNextFact() {
+        factText.textContent = facts[currentFact];
+        factsBox.style.display = 'block';
+
+        currentFact = (currentFact + 1) % facts.length;
+
+        // Automatically cycle to the next fact every 6 seconds
+        if (factRotationActive) {
+            setTimeout(() => {
+                if (factsBox.style.display === 'block') showNextFact();
+            }, 6000);
+        }
+    }
+
+    // Toggle facts visibility and rotation
+    function toggleFacts() {
+        if (factsBox.style.display === 'block') {
+            factsBox.style.display = 'none';
+            factRotationActive = false; // Stop rotation
+            toggleButton.textContent = 'Show Facts';
+        } else {
+            factsBox.style.display = 'block';
+            factRotationActive = true; // Start rotation
+            toggleButton.textContent = 'Hide Facts';
+            showNextFact(); // Start showing facts
+        }
+    }
+
+    // Add event listener to the toggle button
+    toggleButton.addEventListener('click', toggleFacts);
 });
 
 
-const factsBox = document.getElementById('factsBox');
-const factText = document.getElementById('factText');
-const toggleButton = document.getElementById('toggleFacts'); // Button to toggle facts visibility
 
-// Placeholder facts array
-const facts = [
-  "The Garbage Plate was created by Nick Tahou Hots in Rochester, NY.",
-  "It traditionally includes a mix of home fries, mac salad, meat, and hot sauce.",
-  "The name 'Garbage Plate' came from college students asking for 'one of those garbage plates.'",
-  "Garbage Plates are a staple for late-night eats and Rochester food culture."
-];
-
-let currentFact = 0;
-let factRotationActive = false; // Track if the rotation is active
-
-// Show rotating facts (optional timed loop)
-function showNextFact() {
-  factText.textContent = facts[currentFact];
-  factsBox.style.display = 'block';
-
-  currentFact = (currentFact + 1) % facts.length;
-
-  // Automatically cycle to the next fact every 6 seconds
-  if (factRotationActive) {
-    setTimeout(() => {
-      if (factsBox.style.display === 'block') showNextFact();
-    }, 6000);
-  }
-}
-
-// Toggle facts visibility and rotation
-function toggleFacts() {
-  if (factsBox.style.display === 'block') {
-    factsBox.style.display = 'none';
-    factRotationActive = false; // Stop rotation
-    toggleButton.textContent = 'Show Facts';
-  } else {
-    factsBox.style.display = 'block';
-    factRotationActive = true; // Start rotation
-    toggleButton.textContent = 'Hide Facts';
-    showNextFact(); // Start showing facts
-  }
-}
-
-// Add event listener to the toggle button
-toggleButton.addEventListener('click', toggleFacts);
