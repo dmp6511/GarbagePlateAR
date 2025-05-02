@@ -1,0 +1,450 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 34726,
+      "max": [
+        0.005345189943909645,
+        0.0072169676423072815,
+        0.0030717963818460703
+      ],
+      "min": [
+        -0.004303483758121729,
+        -0.009128017351031303,
+        -0.0030368752777576447
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 416712,
+      "componentType": 5126,
+      "count": 34726,
+      "max": [
+        0.9999639987945557,
+        0.9994546175003052,
+        0.9999991059303284
+      ],
+      "min": [
+        -0.9999668598175049,
+        -0.9991551041603088,
+        -0.9999998807907104
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 34726,
+      "max": [
+        1.0,
+        0.7882353067398071,
+        0.03921568766236305,
+        1.0
+      ],
+      "min": [
+        1.0,
+        0.7882353067398071,
+        0.03921568766236305,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 34726,
+      "max": [
+        0.9975218772888184,
+        0.5948604941368103
+      ],
+      "min": [
+        0.0024837851524353027,
+        0.002478480339050293
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 203904,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 833424,
+      "componentType": 5126,
+      "count": 137,
+      "max": [
+        0.005064745899289846,
+        0.006998754572123289,
+        0.0030638673342764378
+      ],
+      "min": [
+        -0.003947398159652948,
+        -0.008912269957363605,
+        -0.003029713872820139
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 835068,
+      "componentType": 5126,
+      "count": 137,
+      "max": [
+        0.9986375570297241,
+        0.960821807384491,
+        0.9994752407073975
+      ],
+      "min": [
+        -0.9658076167106628,
+        -0.9565857648849487,
+        -0.9983295202255249
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 555616,
+      "componentType": 5126,
+      "count": 137,
+      "max": [
+        0.9700700044631958,
+        0.9898321628570557,
+        0.999553382396698,
+        1.0
+      ],
+      "min": [
+        -0.9624097347259521,
+        -0.9894008040428162,
+        -0.9991405010223389,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 277808,
+      "componentType": 5126,
+      "count": 137,
+      "max": [
+        0.800119161605835,
+        0.9969938397407532
+      ],
+      "min": [
+        0.0030028822366148233,
+        0.003002181649208069
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 278904,
+      "componentType": 5126,
+      "count": 137,
+      "max": [
+        0.800119161605835,
+        0.9969938397407532
+      ],
+      "min": [
+        0.0030028822366148233,
+        0.003002181649208069
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 280000,
+      "componentType": 5126,
+      "count": 137,
+      "max": [
+        0.800119161605835,
+        0.9969938397407532
+      ],
+      "min": [
+        0.0030028822366148233,
+        0.003002181649208069
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 815616,
+      "componentType": 5125,
+      "count": 480,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "AleixoAlonso (https://sketchfab.com/AleixoAlonso)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/single-cooked-macaroni-132240c4f08d451abd1b9a122f3b46c7",
+      "title": "Single Cooked Macaroni"
+    },
+    "generator": "Sketchfab-14.77.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 817536,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 281096,
+      "byteOffset": 817536,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 836712,
+      "byteOffset": 1098632,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 557808,
+      "byteOffset": 1935344,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 2493152,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/macaroni_textures_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/macaroni_textures_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "macaroni",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          1.0,
+          0.780886047832652,
+          0.3806290697569302,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.13263509239096638
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "macaroni_textures",
+      "normalTexture": {
+        "index": 1
+      },
+      "occlusionTexture": {
+        "index": 0
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9602083826516892,
+          0.4965841891079796,
+          0.017194310686651178,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 0
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "macaroni_HP_macaroni_0",
+      "primitives": [
+        {
+          "attributes": {
+            "COLOR_0": 2,
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "macaroni_LP_macaroni_textures_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 6,
+            "POSITION": 5,
+            "TANGENT": 7,
+            "TEXCOORD_0": 8,
+            "TEXCOORD_1": 9,
+            "TEXCOORD_2": 10
+          },
+          "indices": 11,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "macaroni.fbx"
+    },
+    {
+      "children": [
+        3,
+        5
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -1.6292067939183141e-07,
+        -0.9999999999999868,
+        0.0,
+        0.0,
+        0.9999999999999868,
+        -1.6292067939183141e-07,
+        0.0,
+        -0.006243240553885698,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "macaroni_HP"
+    },
+    {
+      "mesh": 0,
+      "name": "macaroni_HP_macaroni_0"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.6292067939183141e-07,
+        -0.9999999999999868,
+        0.0,
+        0.0,
+        0.9999999999999868,
+        -1.6292067939183141e-07,
+        0.0,
+        0.005782616790384054,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "macaroni_LP"
+    },
+    {
+      "mesh": 1,
+      "name": "macaroni_LP_macaroni_textures_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    }
+  ]
+}

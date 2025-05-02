@@ -62,13 +62,15 @@ function addText(content, position = { x: 0, y: 0.5, z: -1 }) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    // Add AR text labels
+    // Initial AR text labels
     addText("Garbage Plate", { x: 0, y: 1, z: 0 });
     addText("A Rochester, NY classic", { x: 0, y: 0.7, z: 0 });
     addText("Meat, mac salad, fries & more", { x: 0, y: 0.4, z: 0 });
 
     const plate = document.querySelector('#gbPlate');
     const message = document.querySelector('#message');
+
+    // Optional: keep if using popup video again
     const videoPopup = document.querySelector('#videoPopup');
     const videoElement = document.querySelector('#gbVideo');
     const closeBtn = document.querySelector('#closeVideoBtn');
@@ -76,28 +78,29 @@ window.addEventListener('DOMContentLoaded', () => {
     let isSpinning = false;
     let isVideoOpen = false;
 
-    const videoSourceUrl = "assets/GBExplain.mp4";
-
     plate.addEventListener('model-loaded', () => {
-
-        // AR text labels
-        addText("Meat, mac salad, fries & more!!", { x: 0, y: 5.7, z: 0 })
-
+        // Add extra label after model loads
+        addText("Meat, mac salad, fries & more!!", { x: 0, y: 1.4, z: 0 });
 
         plate.addEventListener('click', () => {
             if (isVideoOpen) return;
             isVideoOpen = true;
 
             message.style.display = 'block';
-            videoElement.src = videoSourceUrl;
-            videoElement.style.display = 'block';
-            videoPopup.style.display = 'block';
-            videoElement.play();
-
             setTimeout(() => {
                 message.style.display = 'none';
             }, 3000);
 
+            // ✅ Recommended: open external video page
+            window.open('video.html', '_blank');
+
+            // ❌ (Commented out) Old popup video logic:
+            // videoElement.src = "assets/GBExplain.mp4";
+            // videoElement.style.display = 'block';
+            // videoPopup.style.display = 'block';
+            // videoElement.play();
+
+            // Toggle rotation
             if (!isSpinning) {
                 plate.setAttribute('animation', {
                     property: 'rotation',
@@ -115,10 +118,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    closeBtn.addEventListener('click', () => {
-        videoPopup.style.display = 'none';
-        videoElement.pause();
-        videoElement.src = '';
-        isVideoOpen = false;
-    });
+    // Only relevant if you're still using the in-scene video popup
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            videoPopup.style.display = 'none';
+            videoElement.pause();
+            videoElement.src = '';
+            isVideoOpen = false;
+        });
+    }
 });
