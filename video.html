@@ -27,7 +27,7 @@
             display: none;
             margin-top: 20px;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 36px;
             background-color: crimson;
             color: white;
             border: none;
@@ -57,6 +57,13 @@
         const video = document.getElementById('video');
         const restaurantBtn = document.getElementById('restaurantBtn');
         const backBtn = document.getElementById('backBtn');
+
+        video.addEventListener('loadedmetadata', () => {
+            if (video.duration > 35) {
+                video.currentTime = 35; // Skip to 35 seconds
+            }
+            video.play();
+        });
 
         video.addEventListener('ended', () => {
             restaurantBtn.style.display = 'inline-block';

@@ -60,26 +60,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Play background music
         playBackgroundMusic();
-
-        // Show message about ingredients
-        setTimeout(() => {
-            message.style.display = 'block';
-
-            // Show ingredients after a delay
-            setTimeout(() => {
-                gbMac.setAttribute('visible', 'true');
-                gbBurg.setAttribute('visible', 'true');
-                gbFries.setAttribute('visible', 'true');
-                labelMac.setAttribute('visible', 'true');
-                labelBurg.setAttribute('visible', 'true');
-                labelFries.setAttribute('visible', 'true');
-            }, 1000);
-
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                message.style.display = 'none';
-            }, 5000);
-        }, 500);
     });
 
     // Function to play background music
@@ -122,6 +102,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         document.body.appendChild(audioBtn);
     }
+
+
 
     // Event listeners for ingredients
     gbMac.addEventListener('click', () => {
