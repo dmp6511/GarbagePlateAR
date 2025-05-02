@@ -1,9 +1,8 @@
+/* ───────────── 1. Gesture‑handler (unchanged) ───────────── */
 AFRAME.registerComponent('gesture-handler', {
-    schema: {
-        enabled: { default: true },
-        resetDelay: { default: 2000 }
-    },
-    init: function () {
+    schema: { enabled: { default: true }, resetDelay: { default: 2000 } },
+
+    init() {
         this.initialRotation = this.el.getAttribute('rotation');
         this.initialScale = this.el.getAttribute('scale');
         this.resetTimeout = null;
@@ -16,29 +15,25 @@ AFRAME.registerComponent('gesture-handler', {
         this.el.addEventListener('twofingermove', this.handleScale);
         this.el.addEventListener('touchend', this.scheduleReset);
     },
-    remove: function () {
+
+    remove() {
         this.el.removeEventListener('onefingermove', this.handleRotation);
         this.el.removeEventListener('twofingermove', this.handleScale);
         this.el.removeEventListener('touchend', this.scheduleReset);
     },
-    handleRotation: function (event) {
-        const rotation = this.el.getAttribute('rotation');
-        this.el.setAttribute('rotation', {
-            x: rotation.x,
-            y: rotation.y + event.detail.positionChange.x * 2,
-            z: rotation.z
-        });
+
+    handleRotation(e) {
+        const rot = this.el.getAttribute('rotation');
+        this.el.setAttribute('rotation', { x: rot.x, y: rot.y + e.detail.positionChange.x * 2, z: rot.z });
     },
-    handleScale: function (event) {
-        const scale = this.el.getAttribute('scale');
-        const delta = event.detail.spreadChange / 200;
-        this.el.setAttribute('scale', {
-            x: scale.x + delta,
-            y: scale.y + delta,
-            z: scale.z + delta
-        });
+
+    handleScale(e) {
+        const s = this.el.getAttribute('scale');
+        const d = e.detail.spreadChange / 200;
+        this.el.setAttribute('scale', { x: s.x + d, y: s.y + d, z: s.z + d });
     },
-    scheduleReset: function () {
+
+    scheduleReset() {
         clearTimeout(this.resetTimeout);
         this.resetTimeout = setTimeout(() => {
             this.el.setAttribute('rotation', this.initialRotation);
@@ -47,67 +42,70 @@ AFRAME.registerComponent('gesture-handler', {
     }
 });
 
-function addText(content, position = { x: 0, y: 0.5, z: -1 }) {
-    const container = document.querySelector('#text-container');
-    const textEl = document.createElement('a-text');
-    textEl.setAttribute('value', content);
-    textEl.setAttribute('color', '#222');
-    textEl.setAttribute('align', 'center');
-    textEl.setAttribute('width', 2);
-    textEl.setAttribute('position', `${position.x} ${position.y} ${position.z}`);
-    textEl.setAttribute('side', 'double');
-    textEl.setAttribute('shader', 'msdf');
-    textEl.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json');
-    container.appendChild(textEl);
+/* ───────────── 2. Helpers ───────────── */
+function addText(value, position) {
+    const parent = document.querySelector('#text-container');
+    const t = document.createElement('a-text');
+    t.setAttribute('value', value);
+    t.setAttribute('position', `${position.x} ${position.y} ${position.z}`);
+    t.setAttribute('color', '#fff');
+    t.setAttribute('align', 'center');
+    t.setAttribute('width', 2);
+    t.setAttribute('side', 'double');
+    t.setAttribute('look-at', '[camera]');
+    t.setAttribute('shader', 'msdf');
+    t.setAttribute('font', 'https://cdn.aframe.io/fonts/Roboto-msdf.json');
+    parent.appendChild(t);
 }
 
-function showSidebar(text) {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarText = document.getElementById('sidebarText');
-    sidebarText.textContent = text;
-    sidebar.style.right = '0';
+function showSidebar(msg) {
+    document.getElementById('sidebarText').textContent = msg;
+    document.getElementById('sidebar').style.right = '0';
 }
 
 function hideSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.style.right = '-260px';
+    document.getElementById('sidebar').style.right = '-260px';
 }
 
-
+/* ───────────── 3. Main logic ───────────── */
 window.addEventListener('DOMContentLoaded', () => {
-    // Initial AR text labels
-    addText("Garbage Plate", { x: 0, y: 3.5, z: 0.8 });
-    addText("A Rochester, NY classic", { x: 0, y: 2.7, z: 0.8 });
-    addText("Meat, mac salad, fries & more", { x: 0, y: 2.4, z: 0.8 });
+    /* Intro text above marker */
+    addText('Garbage Plate', { x: 0, y: 3.5, z: 0.8 });
+    addText('A Rochester, NY classic', { x: 0, y: 2.7, z: 0.8 });
+    addText('Meat, mac salad, fries & more', { x: 0, y: 2.4, z: 0.8 });
 
     const plate = document.querySelector('#gbPlate');
-    const message = document.querySelector('#message');
+    const msgBox = document.querySelector('#message');
 
-    // Optional: keep if using popup video again
-    const videoPopup = document.querySelector('#videoPopup');
-    const videoElement = document.querySelector('#gbVideo');
-    const closeBtn = document.querySelector('#closeVideoBtn');
+    /* label + model entities */
+    const labels = {
+        mac: document.querySelector('#labelMac'),
+        burg: document.querySelector('#labelBurg'),
+        fries: document.querySelector('#labelFries')
+    };
+    const models = {
+        mac: document.querySelector('#gbMac'),
+        burg: document.querySelector('#gbBurg'),
+        fries: document.querySelector('#gbFries')
+    };
 
-    let isSpinning = false;
-    let isVideoOpen = false;
+    let spinning = false;
+    let activated = false;          // ensure plate tap logic runs once
 
+    /* ── plate loaded ────────────────────── */
     plate.addEventListener('model-loaded', () => {
-        // Add extra label after model loads
-        addText("Meat, mac salad, fries & more!!", { x: 0, y: 1.4, z: 0 });
+        addText('Tap the plate to explore!', { x: 0, y: 1.4, z: 0 });
 
         plate.addEventListener('click', () => {
-            if (isVideoOpen) return;
-            isVideoOpen = true;
+            if (activated) return;
+            activated = true;
 
-            message.style.display = 'block';
-            setTimeout(() => {
-                message.style.display = 'none';
-            }, 3000);
+            /* brief toast */
+            msgBox.style.display = 'block';
+            setTimeout(() => (msgBox.style.display = 'none'), 3000);
 
-
-
-            // Toggle rotation
-            if (!isSpinning) {
+            /* spin toggle */
+            if (!spinning) {
                 plate.setAttribute('animation', {
                     property: 'rotation',
                     to: '0 90 0',
@@ -115,38 +113,22 @@ window.addEventListener('DOMContentLoaded', () => {
                     easing: 'linear',
                     loop: true
                 });
-                isSpinning = true;
-            } else {
-                plate.removeAttribute('animation');
-                isSpinning = false;
-                plate.setAttribute('rotation', '0 -90 0');
+                spinning = true;
             }
 
-            document.querySelector('#gbMac').setAttribute('visible', 'true');
-            document.querySelector('#gbBurg').setAttribute('visible', 'true');
-            document.querySelector('#gbFries').setAttribute('visible', 'true');
-
-            // show labels
-            document.querySelector('#labelMac').setAttribute('visible', 'true');
-            document.querySelector('#labelBurg').setAttribute('visible', 'true');
-            document.querySelector('#labelFries').setAttribute('visible', 'true');
+            /* reveal ingredients + labels */
+            ['mac', 'burg', 'fries'].forEach(key => {
+                models[key].setAttribute('visible', 'true');
+                labels[key].setAttribute('visible', 'true');
+            });
         });
     });
 
-    // click events for ingredients
-    // when clicked, open sidebar with ingredient info
-    // Ingredient click listeners
-    document.querySelector('#gbMac').addEventListener('click', () => {
-        showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple.");
-    });
+    /* ── label click handlers ─────────────── */
+    labels.mac.addEventListener('click', () => showSidebar("Mac Salad: A creamy cold pasta side dish that's a Garbage Plate staple."));
+    labels.burg.addEventListener('click', () => showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options."));
+    labels.fries.addEventListener('click', () => showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate."));
 
-    document.querySelector('#gbBurg').addEventListener('click', () => {
-        showSidebar("Cheeseburger Patty: A grilled ground beef patty, one of the most popular meat options.");
-    });
-
-    document.querySelector('#gbFries').addEventListener('click', () => {
-        showSidebar("French Fries: Crispy and golden, they form the base of a traditional Garbage Plate.");
-    });
-
-
+    /* make hideSidebar globally available for the sidebar close button */
+    window.hideSidebar = hideSidebar;
 });

@@ -86,7 +86,7 @@
       <!-- Ingredient models (positioned behind and above the plate, facing the camera) -->
       <a-text id="labelMac" value="Mac Salad" position="-1.5 5.2 -1.5" look-at="[camera]" color="white" width="2"
         visible="false"></a-text>
-      <a-entity id="gbMac" gltf-model="./assets/single_cooked_macaroni/mac.gltf" scale="18.7 18.7 18.7"
+      <a-entity id="gbMac" gltf-model="./assets/single_cooked_macaroni/mac.gltf" scale="20.7 20.7 20.7"
         position="-1.5 4.45 -1.5" look-at="[camera]" visible="false"></a-entity>
 
 
@@ -122,37 +122,8 @@
     These are the primary ingredients of a Garbage Plate. Tap on any ingredient to learn more about it!
   </div>
 
-  <!-- Video Popup -->
-  <div id="videoPopup" style="
-    position: absolute;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    padding: 10px;
-    border-radius: 10px;
-    display: none;
-    z-index: 999;
-    text-align: center;
-    max-width: 90%;
-    box-sizing: border-box;">
-
-    <button id="closeVideoBtn" style="
-      background: crimson;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: sans-serif;
-      font-size: 14px;
-      width: 100%;">
-      Close Video
-    </button>
-
-    <!-- Sidebar Message -->
-    <div id="sidebar" style="
+  <!-- Sidebar Message -->
+  <div id="sidebar" style="
     position: fixed;
     top: 0;
     right: -260px; /* hidden off-screen by default */
@@ -167,11 +138,11 @@
     transition: right 0.4s ease;
     overflow-y: auto;
   ">
-      <h2 style="margin-top: 0;">Ingredient</h2>
-      <p id="sidebarText">Info will appear here</p>
+    <h2 style="margin-top: 0;">Ingredient</h2>
+    <p id="sidebarText">Info will appear here</p>
 
-      <!-- 🔗 Redirect Button -->
-      <button onclick="window.open('https://www.originalgarbageplate.com', '_blank')" style="
+    <!-- 🔗 Redirect Button -->
+    <button onclick="window.open('https://www.originalgarbageplate.com', '_blank')" style="
       margin-top: 20px;
       padding: 10px 16px;
       font-size: 14px;
@@ -181,11 +152,11 @@
       border-radius: 5px;
       cursor: pointer;
       width: 100%;">
-        Visit the Restaurant
-      </button>
+      Visit the Restaurant
+    </button>
 
-      <!-- ❌ Close Button -->
-      <button onclick="hideSidebar()" style="
+    <!-- ❌ Close Button -->
+    <button onclick="hideSidebar()" style="
       margin-top: 10px;
       padding: 8px 16px;
       font-size: 14px;
@@ -195,9 +166,9 @@
       border-radius: 5px;
       cursor: pointer;
       width: 100%;">
-        Close
-      </button>
-    </div>
+      Close
+    </button>
+  </div>
 
 
   </div>
