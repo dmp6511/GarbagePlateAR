@@ -75,9 +75,6 @@
 
     <!-- Marker with model and text container -->
     <a-marker type="pattern" url="./assets/gbMarker.patt">
-      <!-- Camera with raycaster that targets .clickable objects -->
-      <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable">
-      </a-entity>
 
       <!-- ============ MAC LABEL ============ -->
       <a-entity id="labelMac" class="clickable" position="-1.5 5.6 -1.5" look-at="[camera]">
@@ -105,8 +102,9 @@
 
     </a-marker>
 
-    <!-- Camera -->
-    <a-entity camera></a-entity>
+    <!-- Camera with raycaster that targets .clickable objects -->
+    <a-entity camera cursor="rayOrigin: mouse" raycaster="objects: .clickable">
+    </a-entity>
   </a-scene>
 
   <!-- Message Box -->
